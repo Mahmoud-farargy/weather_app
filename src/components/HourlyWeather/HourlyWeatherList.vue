@@ -22,7 +22,6 @@ export default {
     ],
     computed: {
         alteredHourlyList() {
-            console.log("hourly wather", this.currentCity.hourly)
             return (this.currentCity && this.currentCity.hourly) ? this.currentCity.hourly?.slice(0,48) : [];
         }
     },

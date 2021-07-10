@@ -75,9 +75,6 @@ export default {
     components: {
         AlertItem
     },
-    created(){
-        console.log(this.currentCity)
-    }
 }
 </script>
 

@@ -5,7 +5,7 @@
                 <form @submit="onAddingSubmission" class="add--city--inner flex-column">
                     <label for="city">Enter location:</label>
                     <input :class="{'errorClass': submitted && !city}" type="text" name="city-name" id="city" placeholder="Search by city name" v-model="city" />
-                    <input type="submit" name="submit-adding-city" value="Add" />
+                    <input :disabled=" getKeys && getKeys.isAddingCity " :class="{'disabled': getKeys && getKeys.isAddingCity }" type="submit" name="submit-adding-city" value="Add" />
                 </form>
             </div>
             
@@ -16,9 +16,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { addCity } from "../../../Utilites/Utilites";
 export default {
+    computed: {
+         ...mapGetters("toggleKeys", ["getKeys"]),
+    },
     methods: {
       ...mapActions("modals", ["toggleModal"]),
       closeModal(){
@@ -27,11 +30,10 @@ export default {
       onAddingSubmission(e){
           e.preventDefault();
           this.submitted = true;
-          if(this.city){
+          if(this.city && !this.getKeys?.isAddingCity){
                addCity(this.city).then(() => {
                    this.closeModal();
-               });            
-            console.log("submitted");
+               });
           }
          
       }

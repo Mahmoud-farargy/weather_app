@@ -21,7 +21,6 @@ export default {
     },
     methods: {
       updateMarker(val) {
-         console.log(val);
               if(val && Object.keys(val).length > 0){ 
                 const lat = val?.coord?.lat;
                 const lon = val?.coord?.lon;
@@ -39,10 +38,8 @@ export default {
       }
     },
     mounted() {
-        console.log(this.currentCity);
       this.mapInitData = leaflet.map("mapid");
       this.updateMarker(this.currentCity);
-          console.log(this.mapInitData);
           leaflet
             .tileLayer(
               `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${mapBoxKey}`,

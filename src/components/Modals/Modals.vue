@@ -14,10 +14,7 @@ export default {
   components: { AddCity },
   computed: {
       ...mapGetters("modals", {modalsState: "getModals"})
-  },
-  created() {
-    console.log("created");
-  },
+  }
 };
 </script>
 

@@ -5,7 +5,6 @@ export const state = {
 
 export const mutations = {
     updateResultList(state, payload) {
-        console.log(payload);
         state.resultList = payload;
     },
     updateCities(state, payload) {
@@ -18,7 +17,6 @@ export const actions = {
         state.commit("updateResultList", payload);
     },
     updateCities(state, payload) {
-        console.log("cities triggered", payload);
         state.commit("updateCities", payload);
     }
 }
