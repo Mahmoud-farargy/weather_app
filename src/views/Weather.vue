@@ -33,7 +33,6 @@ export default {
   data(){
     return {
       currentCity: {},
-      loading: false
     }
   },
   components: {
@@ -47,20 +46,23 @@ export default {
   computed: {
     ...mapGetters("savedResults", {results: "getResultList"}),
     ...mapGetters("toggleKeys", ["getKeys"]),
+    loading(){
+      return this.getKeys?.isGettingWeather;
+    }
   },
   methods: {
     ...mapActions("toggleKeys", ["mutateKeys"]),
       getWeather(){
-        this.loading = true;
+        this.mutateKeys({key: "isGettingWeather", val:true})
         this.currentCity = this.results.filter(result => result.name === this.$route.params.city)[0];
         return new Promise((resolve, reject) => {
             API().get(`data/2.5/onecall?lat=${this.currentCity && this.currentCity.coord.lat}&lon=${this.currentCity && this.currentCity.coord.lon}&exclude=current&alerts&units=imperial&appid=${APIKey}
                       `)
             .then(res => {
-              this.loading = false;
+              this.mutateKeys({key: "isGettingWeather", val:false});
               resolve(res.data);
             }).catch(() => {
-               this.loading = false;
+               this.mutateKeys({key: "isGettingWeather", val:false});
                 reject([]);
             })
         }) 
@@ -98,27 +100,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .weather--loading{
-    @keyframes spin {
-      to {
-        transform: rotateZ(360deg);
-      }
-    }
-    height: 100vh;
-    width: 100%;
-    justify-content: center;
-    align-items:center;
-    span {
-      display: block;
-      margin: 0 auto;
-      width:60px;
-      height: 60px;
-      border: 4px solid transparent;
-      border-top-color: #142a5f;
-      border-radius: 50%;
-      animation: spin ease 1000ms infinite;
-    }
-  }
   #weather--view{
     padding-top: var(--component-padding-top);
     color: #000;

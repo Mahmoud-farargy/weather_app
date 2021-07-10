@@ -42,7 +42,7 @@ export const refreshCitiesResults = () => {
         const receivedData = data.data();
         if (receivedData) {
           const myCities = receivedData?.cities;
-          if (myCities && myCities.length > 0) {
+          if (myCities) {
             store.dispatch("savedResults/updateCities", myCities);
             const getCitiesInfo = async () => {
               return Promise.all(

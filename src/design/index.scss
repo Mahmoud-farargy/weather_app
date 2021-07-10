@@ -89,7 +89,8 @@ ul, ol, dl {
     width:100%;
 }
 // xxx--global classes---xxx
-// animations
+// ANIMATIONS
+// fade
 .fade-enter-active,
   .fade-leave-active {
     transition: opacity 1s;
@@ -98,4 +99,28 @@ ul, ol, dl {
   .fade-leave-to {
     opacity: 0;
   }
-// xxx---animations---xxx
+
+//  loading
+  .weather--loading{
+    @keyframes spin {
+      to {
+        transform: rotateZ(360deg);
+      }
+    }
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+    align-items:center;
+    span {
+      display: block;
+      margin: 0 auto;
+      width:60px;
+      height: 60px;
+      border: 4px solid transparent;
+      border-top-color: #142a5f;
+      border-radius: 50%;
+      animation: spin ease 1000ms infinite;
+      -webkit-animation: spin ease 1000ms infinite;
+    }
+  }
+// xxx---ANIMATIONS---xxx

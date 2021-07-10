@@ -21,7 +21,7 @@ export default {
     },
     methods: {
       updateMarker(val) {
-              if(val && Object.keys(val).length > 0){ 
+              if(val && Object.keys(val).length > 0){
                 const lat = val?.coord?.lat;
                 const lon = val?.coord?.lon;
                 if(lat && lon){

@@ -1,6 +1,17 @@
 <template>
   <div id="cities">
-    <div v-if=" cities.length > 0" class="cities--container">
+    <div v-if="loading" class="weather--loading flex-column">
+        <span></span>
+    </div>
+    <div v-else-if="cities.length <= 0" class="empty--cities--container flex-row">
+        <div class="empty--cities--inner flex-column">
+          No city added, add a new one?
+            <button @click="toggleModal('addCity')" class="add--city--btn">
+              Add city
+            </button>
+        </div>
+    </div>
+    <div v-else-if="cities.length > 0" class="cities--container">
         <div
           v-for="(city, index) in cities"
           v-bind:key="city.id + index"
@@ -9,14 +20,7 @@
         <city-item v-if="city" :item="city" />
         </div>
     </div>
-    <div v-else class="empty--cities--container flex-row">
-        <div class="empty--cities--inner flex-column">
-          No city added, add a new one?
-            <button @click="toggleModal('addCity')" class="add--city--btn">
-              Add city
-            </button>          
-        </div>
-    </div>
+
   </div>
 </template>
 
@@ -27,6 +31,10 @@ export default {
   name: "cities",
   computed: {
     ...mapGetters("savedResults", { cities: "getResultList" }),
+    ...mapGetters("toggleKeys", ["getKeys"]),
+    loading(){
+      return this.getKeys?.isGettingWeather;
+    }
   },
   methods: {
      ...mapActions("modals", {modal:"toggleModal"}),

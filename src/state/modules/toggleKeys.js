@@ -5,7 +5,8 @@ export const state = {
         isLoading: false,
         isFahrenheit: true,
         isAddingCity: false,
-        isDeletingCity: false
+        isDeletingCity: false,
+        isGettingWeather: false
     }
 }
 export const mutations = {
