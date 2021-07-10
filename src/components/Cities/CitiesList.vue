@@ -36,9 +36,7 @@ export default {
   },
   components: {
     CityItem,
-  }, created(){
-        console.log("city list triggered");
-    },
+  }
 };
 </script>
 

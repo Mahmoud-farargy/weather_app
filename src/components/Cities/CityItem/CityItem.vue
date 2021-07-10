@@ -1,34 +1,38 @@
 <template>
-  <div :class="{'disabled': getKeys && getKeys.isLoading}" @click="goToWeather" id="cityItem" class="flex-column">
-      <span>{{item && item.name}}</span>
-      
-      <div class="weather flex-row">
-          <span>{{Math.round((item && item.main && item.main.temp) ? (item.main.temp) : 0)}}&deg;</span>
-          <img :src="require(`../../../../public/conditions/${(item && item.weather && item.weather[0] && item.weather[0].icon) ? (item.weather[0].icon) : '01d' }.svg`)" :alt="`${item.name} temperature`"/>
-         
-      </div>
-      
-      <div class="weather--video">
-          <video
-          autoplay
-          loop
-          muted
-          :src="require(`../../../../public/videos/${(item && item.weather && item.weather[0] && item.weather[0].icon)  ? (handleVideoPaths(item.weather[0].icon)) : '01d' }.mp4`)"
-          >
+  <transition name="fade" mode="out-in">
+        <div :class="{'disabled': getKeys && getKeys.isLoading || getKeys.isDeletingCity}" @click="goToWeather" id="cityItem" class="flex-column">
+        <span>{{item && item.name}}</span>
         
-          </video>
-          
-          <div class="weather--bg--overlay"></div>
-          <div @click.stop="delCity" class="del--city" v-if="getKeys.editCities">
-              <i class="fas fa-trash-alt"></i>
-          </div>
-      </div>
-  </div>
+        <div class="weather flex-row">
+            <span>{{Math.round((item && item.main && item.main.temp) ? (item.main.temp) : 0)}}&deg;</span>
+            <img :src="require(`../../../../public/conditions/${(item && item.weather && item.weather[0] && item.weather[0].icon) ? (item.weather[0].icon) : '01d' }.svg`)" :alt="`${item.name} temperature`"/>
+            
+        </div>
+        
+        <div class="weather--video">
+            <video
+            autoplay
+            loop
+            muted
+            :src="require(`../../../../public/videos/${(item && item.weather && item.weather[0] && item.weather[0].icon)  ? (handleVideoPaths(item.weather[0].icon)) : '01d' }.mp4`)"
+            >
+            
+            </video>
+            
+            <div class="weather--bg--overlay"></div>
+            <div @click.stop="delCity" class="del--city" v-if="getKeys.editCities">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+        </div>
+    </div> 
+  </transition>
+
 </template>
 
 <script>
-import { deleteCity, notify } from "../../../Utilites/Utilites";
+import { deleteCity, notify, confirmDialog } from "../../../Utilites/Utilites";
 import { mapGetters } from "vuex";
+
 export default {
   props: ["item"],
   computed: {
@@ -36,10 +40,17 @@ export default {
   },
   methods: {
       delCity(){
-        if(!this.getKeys?.isLoading) deleteCity( this.item?.name );
+         if(!this.getKeys?.isLoading && !this.getKeys?.isDeletingCity) confirmDialog({
+                msg: `Delete ${this.item?.name}?`,
+                buttonLabels: {no: "No", yes: "Yes"},
+                confirmedFunc: ()=> {
+                     deleteCity( this.item?.name );
+                }
+              });
+       
       },
       goToWeather() {
-          if(!this.getKeys?.isLoading){
+          if(!this.getKeys?.isLoading && !this.getKeys?.isDeletingCity){
                 if(this.item && this.item.name){
                         this.$router.push(`/weather/${this.item.name}`);
                 }else{
@@ -60,10 +71,7 @@ export default {
               return iconName;
           }
       }
-  },
-  created() {
-    console.log("city triggered");
-  },
+  }
 };
 </script>
 

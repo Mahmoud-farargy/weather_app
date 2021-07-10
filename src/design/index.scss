@@ -89,3 +89,13 @@ ul, ol, dl {
     width:100%;
 }
 // xxx--global classes---xxx
+// animations
+.fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+// xxx---animations---xxx

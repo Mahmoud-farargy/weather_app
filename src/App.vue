@@ -1,7 +1,12 @@
 <template>
   <div id="app">
+    <!-- Confirmation Modal -->
+    <vue-confirm-dialog></vue-confirm-dialog>
+    <!-- Header -->
     <Header />
+    <!-- Modals -->
     <Modals v-if="modalsState && Object.keys(modalsState).length > 0 && Object.values(modalsState).some(el => el === true)" />
+    <!-- Routes -->
     <RouterView :key="$route.fullPath"/>
   </div>
 </template>
@@ -14,7 +19,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import Header from "@/components/Header.vue";
-
 export default {
   name: "app",
   page: {

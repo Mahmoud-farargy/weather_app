@@ -53,13 +53,10 @@ export default {
       getWeather(){
         this.loading = true;
         this.currentCity = this.results.filter(result => result.name === this.$route.params.city)[0];
-        console.log( this.$route.params.city);
-        console.log(this.currentCity);
         return new Promise((resolve, reject) => {
             API().get(`data/2.5/onecall?lat=${this.currentCity && this.currentCity.coord.lat}&lon=${this.currentCity && this.currentCity.coord.lon}&exclude=current&alerts&units=imperial&appid=${APIKey}
                       `)
             .then(res => {
-              console.log(res);
               this.loading = false;
               resolve(res.data);
             }).catch(() => {
@@ -73,7 +70,6 @@ export default {
           const currentHours = new Date().getHours();
           const sunrise = new Date(sys?.sunrise * 1000).getHours();
           const sunset = new Date(sys?.sunset * 1000).getHours();
-          console.log(currentHours, sunrise, sunset)
           return (currentHours > sunrise && currentHours < sunset);
         }else{
           return false;
@@ -91,7 +87,6 @@ export default {
     this.getWeather().then(res => {
       this.currentCity = {...this.currentCity, ...res};
       this.mutateKeys({ key: "isDayWeather", val: this.checkIfDayTime(this.currentCity?.sys || false)});
-      console.log(res, this.currentCity);
     });
     // air polution
     // API().get(`/data/2.5/air_pollution?lat=50.8476&lon=14.0625&appid=${APIKey}`).then(res => {

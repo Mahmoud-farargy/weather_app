@@ -14,7 +14,6 @@ export default {
     ],
     computed: {
         chartData() {
-            console.log("hourly chart",this.currentCity);
             return (this.currentCity && this.currentCity?.hourly?.length > 0) ?
             this.currentCity?.hourly.slice(1,24).map(el => {
                 return {

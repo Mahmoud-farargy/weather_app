@@ -36,10 +36,10 @@ export default {
  computed:{
     formattedTime(){
         // todo: get the correct timezone offset
-        var d = new Date();
-        var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-        var nd = new Date(utc + (3600000* -4));
-        console.log( nd.toLocaleString(), this.currentCity.timezone_offset);
+        // var d = new Date();
+        // var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+        // var nd = new Date(utc + (3600000* -4));
+        // console.log( nd.toLocaleString(), this.currentCity.timezone_offset);
 
         return (this.currentCity && this.currentCity?.dt) && (`${new Date(this.currentCity?.dt * 1000).toLocaleString('en-us', {weekday: "long"})} ${new Date(this.currentCity?.dt * 1000).toLocaleString('en-us', {hour: "numeric"})}`);
     }
