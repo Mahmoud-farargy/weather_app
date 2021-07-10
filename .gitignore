@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 /dist
-
+# secret keys
+/src/config/info.js
 
 # local env files
 .env.local

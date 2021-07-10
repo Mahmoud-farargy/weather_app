@@ -1,0 +1,91 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+// fonts
+@import url(../assets/Fonts/Quicksand/quicksand.css);
+:root{
+    //padding
+    --component-padding-top: 81px;
+    // font styles
+    --sand-regular:"Quicksand-regular", serif;
+    --sand-semiBold: "Quicksand-semiBold", serif;
+    --sand-bold: "Quicksand-bold", serif;
+    --sand-light: "Quicksand-light", serif;
+    --sand-medium: "Quicksand-medium", serif;
+    //colors
+    --primary-clr: #313640;
+    --white: #fff;
+    --secondary-clr: #31363d;
+    --dark: #222325;
+    --gray: #dbdbdb;
+    --light-gray:#fafafa;
+    --shadow-white: #efefef;
+    // shadow
+    --slight-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    // borders
+    --weather-border-bottom: 1px solid rgba(255,255, 255,0.7);
+    //transitions
+    --transition-mild:  500ms ease all;
+}
+// global classes
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}
+.container{
+    padding: 30px 20px;
+}
+body{
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+}
+
+body, i, h1, h2, h3, h4, h5, h6, span {
+    font-family: var(--sand-regular);
+}
+ul, ol, dl {
+    margin: 0;
+}
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.disabled{
+    cursor: not-allowed;
+    opacity: 0.5 !important;
+}
+.errorClass{
+    border-bottom-color: rgb(233, 51, 51) !important;
+}
+.highlight--on--active{
+    &:active{
+        background-color: rgba(9, 84, 128,0.5);
+        border-radius: 4px;
+        
+    }
+}
+.night--weather, .day--weather{
+    transition: 500ms var(---transition-mild);
+}
+.day--weather {
+    background-color: rgb(50,150, 249) !important;
+}
+.night--weather {
+    background-color: rgb(20,42, 95) !important;
+}
+.container{
+    max-width: 1024px;
+    width:100%;
+}
+// xxx--global classes---xxx
