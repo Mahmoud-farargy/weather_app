@@ -16,6 +16,7 @@ Vue.use(VueRouter);
 Vue.use(VueToast);
 Vue.use(AsyncComputed);
 Vue.use(VueConfirmDialog);
+
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default);
 
 new Vue({
@@ -23,8 +24,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app');
-
-router.beforeEach((to, _, next) => {
-  document.title = `${(to.meta && to.meta.title) ? to.meta.title : "Weather App"}`;
-  next();
-})

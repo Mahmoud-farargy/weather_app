@@ -1,6 +1,6 @@
 <template>
   <section id="currentWeather">
-      <div class="container flex-column">
+      <div v-if="currentCity" class="container flex-column">
         <div class="weather--info flex-column">
             <span class="city--name">{{currentCity.name}}, {{currentCity.sys.country && currentCity.sys.country}}</span>
             <span>{{formattedTime}}</span>
@@ -26,22 +26,21 @@
 </template>
 
 <script>
+import moment from "moment-timezone";
+import { mapGetters } from 'vuex';
+
 export default {
  props:[
      "isDay",
      "currentCity",
      "loading",
-     "getDegree"
+     "getDegree",
  ],
  computed:{
-    formattedTime(){
-        // todo: get the correct timezone offset
-        // var d = new Date();
-        // var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-        // var nd = new Date(utc + (3600000* -4));
-        // console.log( nd.toLocaleString(), this.currentCity.timezone_offset);
-
-        return (this.currentCity && this.currentCity?.dt) && (`${new Date(this.currentCity?.dt * 1000).toLocaleString('en-us', {weekday: "long"})} ${new Date(this.currentCity?.dt * 1000).toLocaleString('en-us', {hour: "numeric"})}`);
+     ...mapGetters("savedResults", {cityTimezone: "getCityTimezone"}),
+     formattedTime(){
+        return `${moment().tz( this.cityTimezone ? this.cityTimezone : Intl.DateTimeFormat().resolvedOptions().timeZone).format('dddd h:mm:ss A')}`
+        
     }
  }
 
@@ -98,7 +97,7 @@ export default {
         z-index: 0;
         height: 100%;
         position: absolute;
-        right: -100px;
+        right: -185px;
         display: flex;
         img{
             width: 366px;

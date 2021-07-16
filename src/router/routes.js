@@ -1,19 +1,20 @@
 import Home from '../views/Home.vue';
-
 export const routes = [
     {
       path: '/',
       name: 'Home',
       component: Home,
       meta: {
-        title: "Weather forcast | Mahmoud Farargy"
+        title: "Cities",
+        requiresAuth: false
       }
     },
     {
       path: '/weather/:city',
       name: 'Weather',
       meta: {
-        title: "Weather | Mahmoud Farargy"
+        title: "Weather",
+        requiresAuth: false
       },
       // route level code-splitting
       // this generates a separate chunk (weather.[hash].js) for this route

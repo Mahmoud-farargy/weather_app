@@ -70,9 +70,8 @@ ul, ol, dl {
 }
 .highlight--on--active{
     &:active{
-        background-color: rgba(9, 84, 128,0.5);
+        background-color: rgba(16, 109, 163, 0.5) !important;
         border-radius: 4px;
-        
     }
 }
 .night--weather, .day--weather{
@@ -99,7 +98,14 @@ ul, ol, dl {
   .fade-leave-to {
     opacity: 0;
   }
-
+.fadeEffect{
+    animation: fadeIn 0.2s ease-out;
+    -webkit-animation: fadeIn 0.2s ease-out;
+    animation-fill-mode: none;
+    animation-direction: normal;
+    animation-iteration-count: 1;
+    animation-play-state: running;
+}
 //  loading
   .weather--loading{
     @keyframes spin {
@@ -124,4 +130,29 @@ ul, ol, dl {
       -webkit-animation: spin ease 1000ms infinite;
     }
   }
+
+@keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@-webkit-keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@-moz-keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
 // xxx---ANIMATIONS---xxx

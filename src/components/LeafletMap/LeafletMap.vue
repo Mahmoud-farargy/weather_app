@@ -6,7 +6,7 @@
 
 <script>
 import leaflet from "leaflet";
-import { mapBoxKey } from "../../config/info";
+import { mapBoxKey } from "@/config/info";
 export default {
     props: {
        "currentCity":  {
@@ -62,7 +62,7 @@ export default {
             width:100%;
             z-index: 10;
             height: 250px;
-        }   
+        }
         /* .leaflet-tile {
             filter: hue-rotate(180deg) invert(80%);
             -webkit-filter: hue-rotate(180deg) invert(80%);

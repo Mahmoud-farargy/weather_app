@@ -1,6 +1,8 @@
 export const state = {
     resultList: [],
-    cities: []
+    cities: [],
+    currentCityTimezone: "",
+    resultsCopy: []
 }
 
 export const mutations = {
@@ -9,7 +11,13 @@ export const mutations = {
     },
     updateCities(state, payload) {
         state.cities = payload;
-    }
+    },
+    updateTimezone: (state, payload) => {
+        state.currentCityTimezone = payload;
+    },
+    updateResultsCopy: (state, payload) => {
+        state.resultsCopy = payload;
+    },
 }
 
 export const actions = {
@@ -18,6 +26,12 @@ export const actions = {
     },
     updateCities(state, payload) {
         state.commit("updateCities", payload);
+    },
+    updateTimezone:  ({commit}, payload) => {
+        commit("updateTimezone", payload);
+    },
+    updateResultsCopy: ({commit}, payload) => {
+        commit("updateResultsCopy", payload);
     }
 }
 
@@ -27,5 +41,11 @@ export const getters = {
     },
     getCities: state => {
         return state.cities;
+    },
+    getCityTimezone: state => {
+        return state.currentCityTimezone;
+    },
+    getResultsCopy: state => {
+        return state.resultsCopy;
     }
 }

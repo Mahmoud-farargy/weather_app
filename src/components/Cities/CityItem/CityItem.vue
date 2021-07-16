@@ -44,7 +44,7 @@ export default {
                 msg: `Delete ${this.item?.name}?`,
                 buttonLabels: {no: "No", yes: "Yes"},
                 confirmedFunc: ()=> {
-                     deleteCity( this.item?.name );
+                     deleteCity( this.item );
                 }
               });
        
