@@ -1,5 +1,6 @@
 <template>
-    <div>
+  <div id="weather">
+    <div v-if="currentCity">
       <div v-if="loading" class="weather--loading flex-column">
         <span></span>
       </div>
@@ -9,12 +10,19 @@
           <CurrentWeather  :currentCity="currentCity" :isDay="getKeys.isDayWeather" :loading="loading" :getDegree="getDegree" />
           <WeatherChart :currentCity="currentCity" :isDay="getKeys.isDayWeather" :loading="loading" :getDegree="getDegree" />
           <HourlyWeatherList :currentCity="currentCity" :loading="loading" :getDegree="getDegree" />
+          <MinutelyWeatherList v-if="showMinutelyWeather" :currentCity="currentCity" :loading="loading" :getDegree="getDegree" />
           <DailyWeatherList  :currentCity="currentCity" :isDay="getKeys.isDayWeather" :loading="loading" :getDegree="getDegree" />
           <AdditionalInfo :currentCity="currentCity" :loading="loading"/>
           <Map :currentCity="currentCity" />
         </div>
       </div>
     </div>
+    <div v-else class="unavailable--data flex-column">
+        <h3>
+          Not available cities
+        </h3>
+    </div>
+  </div>
 
 </template>
 
@@ -25,9 +33,11 @@ import API from "../services/API";
 import CurrentWeather from "../components/CurrentWeather/CurrentWeather";
 import HourlyWeatherList from '../components/HourlyWeather/HourlyWeatherList';
 import DailyWeatherList from '../components/DailyWeather/DailyWeatherList';
+import MinutelyWeatherList from "@/components/MinutelyWeather/MinutelyWeatherList";
 import AdditionalInfo from "../components/AdditionalInfo/AdditionalInfo";
 import WeatherChart from "../components/WeatherChart/WeatherChart";
 import Map from "../components/LeafletMap/LeafletMap";
+import moment from "moment-timezone";
 
 export default {
   data(){
@@ -41,17 +51,22 @@ export default {
     DailyWeatherList,
     AdditionalInfo,
     WeatherChart,
+    MinutelyWeatherList,
     Map
   },
   computed: {
-    ...mapGetters("savedResults", {results: "getResultList"}),
+    ...mapGetters("savedResults", {results: "getResultList", cityTimezone: "getCityTimezone"}),
     ...mapGetters("toggleKeys", ["getKeys"]),
     loading(){
       return this.getKeys?.isGettingWeather;
+    },
+    showMinutelyWeather(){
+      return this.currentCity?.minutely?.some(min => min?.precipitation > 0);
     }
   },
   methods: {
     ...mapActions("toggleKeys", ["mutateKeys"]),
+    ...mapActions("savedResults", ["updateTimezone"]),
       getWeather(){
         this.mutateKeys({key: "isGettingWeather", val:true})
         this.currentCity = this.results.filter(result => result.name === this.$route.params.city)[0];
@@ -68,11 +83,12 @@ export default {
         }) 
       },
       checkIfDayTime(sys){
-        if(sys && sys.sunrise && sys.sunset){
+        if((this.cityTimezone) ||(sys && sys.sunrise && sys.sunset)){
           const currentHours = new Date().getHours();
+          const currentCityHour = moment().tz(this.cityTimezone).format('HH');
           const sunrise = new Date(sys?.sunrise * 1000).getHours();
           const sunset = new Date(sys?.sunset * 1000).getHours();
-          return (currentHours > sunrise && currentHours < sunset);
+          return currentCityHour ? (currentCityHour > 6 && currentCityHour < 20 ) : (currentHours > sunrise && currentHours < sunset);
         }else{
           return false;
         }
@@ -88,6 +104,7 @@ export default {
   created(){
     this.getWeather().then(res => {
       this.currentCity = {...this.currentCity, ...res};
+      this.updateTimezone(res?.timezone);
       this.mutateKeys({ key: "isDayWeather", val: this.checkIfDayTime(this.currentCity?.sys || false)});
     });
     // air polution
@@ -100,22 +117,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  #weather--view{
-    padding-top: var(--component-padding-top);
-    color: #000;
-    overflow-y: auto ;
-    transition: 500ms var(---transition-mild);
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    .weather--inner{
-      overflow: hidden;
-      max-width: 1024;
-      margin: 0 auto;
+ #weather{
+    #weather--view{
+      padding-top: var(--component-padding-top);
+      color: #000;
+      overflow-y: auto ;
+      transition: 500ms var(---transition-mild);
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      .weather--inner{
+        overflow: hidden;
+        max-width: 1024;
+        margin: 0 auto;
+      }
+      .weather--inner.container{
+        padding: 0;
+      }
     }
-    .weather--inner.container{
-      padding: 0;
+    .unavailable--data{
+          background-color: var(--primary-clr);
+          align-items: center;
+          justify-content: center;
+          text-align:center;
+          min-height: 100vh;
+          h3{
+            color: var(--white);
+          }
     }
-  }
+}
 
 </style>

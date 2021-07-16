@@ -13,7 +13,7 @@
 <script>
 import { refreshCitiesResults } from "./Utilites/Utilites";
 import appConfig from "./app-config";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import Modals from "./components/Modals/Modals.vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -35,9 +35,6 @@ export default {
   computed: {
     ...mapGetters("modals", {modalsState:"getModals"}),
     ...mapGetters("savedResults", ["getResultList"]),
-  },
-  methods: {
-    ...mapActions("savedResults", ["updateResultList"]),
   },
   mounted() {
     refreshCitiesResults();

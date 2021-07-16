@@ -31,13 +31,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
- #hourlyWeatherList {
+<style lang="scss">
+ #hourlyWeatherList, #minutelyWeatherList {
      width: 100%;
      border-bottom: var(--weather-border-bottom);
      .container{
          width:100%;
-         .hourly--list{
+         .hourly--list, .minutely--list{
             list-style: none;
             width: 100%;
             max-width: 100vw;

@@ -14,27 +14,31 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import moment from "moment-timezone";
+
 export default {
     props: [
         "timeItem",
         "getDegree"
     ],
     computed: {
+        ...mapGetters("savedResults", {cityTimezone: "getCityTimezone"}),
         formattedTime() {
-            return (this.timeItem && this.timeItem.dt) && new Date(this.timeItem.dt * 1000).toLocaleString('en-us', {hour: "numeric"});
+            return (this.timeItem && this.timeItem.dt) && moment(this.timeItem.dt * 1000).format('h A');
         },
         formattedByDay(){
             return (this.timeItem && this.timeItem.dt) && new Date(this.timeItem.dt * 1000).toLocaleString('en-us', {weekday: "short"});
         }
-    }
+    },
 }
 </script>
 
-<style lang="scss" scoped>
- #hourlyWeatherItem{
+<style lang="scss" >
+ #hourlyWeatherItem, #minutelyWeatherItem{
      width:100%;
      height: 100%;
-     .hourly--item--inner{
+     .hourly--item--inner, .minutely--item--inner{
          color: var(--white);
          text-align: center;
          min-width: 45px;

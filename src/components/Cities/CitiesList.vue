@@ -3,7 +3,12 @@
     <div v-if="loading" class="weather--loading flex-column">
         <span></span>
     </div>
-    <div v-else-if="cities.length <= 0" class="empty--cities--container flex-row">
+    <div v-else-if="citiesResults.length <= 0 && getKeys.isSearchBarOpen" class="empty--cities--container flex-row">
+        <div class="empty--cities--inner flex-column">
+          No results found.
+        </div>
+    </div>
+    <div v-else-if="citiesResults.length <= 0 && !getKeys.isSearchBarOpen" class="empty--cities--container flex-row">
         <div class="empty--cities--inner flex-column">
           No city added, add a new one?
             <button @click="toggleModal('addCity')" class="add--city--btn">
@@ -11,10 +16,11 @@
             </button>
         </div>
     </div>
-    <div v-else-if="cities.length > 0" class="cities--container">
+   
+    <div v-else-if="citiesResults.length > 0" class="cities--container">
         <div
-          v-for="(city, index) in cities"
-          v-bind:key="city.id + index"
+          v-for="(city, index) in citiesResults"
+          v-bind:key="city.id || index"
           class="cities--inner"
         >
         <city-item v-if="city" :item="city" />
@@ -28,13 +34,27 @@
 import { mapActions,mapGetters } from "vuex";
 import CityItem from "./CityItem/CityItem.vue";
 export default {
-  name: "cities",
+  name: "Cities",
   computed: {
-    ...mapGetters("savedResults", { cities: "getResultList" }),
+    ...mapGetters("savedResults", { citiesResults: "getResultList", rowCities:"getCities"}),
     ...mapGetters("toggleKeys", ["getKeys"]),
     loading(){
-      return this.getKeys?.isGettingWeather;
+      return this.getKeys?.isLoading;
+    },
+    trackCitiesLength () {
+        return this.rowCities.length;
     }
+  },
+  watch:{
+   trackCitiesLength(){
+     if( this.$route.name === "Home" && (window.innerWidth || document.documentElement.clientWidth >= 670 ) ){
+        const timeout = setTimeout(() => {
+            window.scrollTo(0,0);
+            window.clearTimeout(timeout);
+        }, 1000);
+       }
+
+   }
   },
   methods: {
      ...mapActions("modals", {modal:"toggleModal"}),

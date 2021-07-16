@@ -1,6 +1,6 @@
 <template>
-    <div class="">
-        <div id="addCity" class="flex-column">
+    <div class="addModal">
+        <div id="addCity" class="flex-column fadeEffect">
             <div class="add--city--container">
                 <form @submit="onAddingSubmission" class="add--city--inner flex-column">
                     <label for="city">Enter location:</label>
