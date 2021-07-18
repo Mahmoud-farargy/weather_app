@@ -2,8 +2,8 @@
   <section id="currentWeather">
       <div v-if="currentCity" class="container flex-column">
         <div class="weather--info flex-column">
-            <span class="city--name">{{currentCity.name}}, {{currentCity.sys.country && currentCity.sys.country}}</span>
-            <span>{{formattedTime}}</span>
+            <span class="city--name"><i class="fas fa-map-marker-alt marker--icon"></i> {{currentCity.name}}, {{currentCity.sys.country && currentCity.sys.country}}</span>
+            <span class="city--time">{{formattedTime}}</span>
             <span class="current--temperture">{{getDegree(currentCity.main.temp)}}&deg;</span>
             <div class="high--low--temperture flex-row">
                 <div class="high flex-row">
@@ -18,7 +18,7 @@
             <span class="condition">{{currentCity.weather[0].description}}</span>
             <span class="feels--like">Feels like {{getDegree(currentCity.main.feels_like)}}&deg;</span>
         </div>
-        <div class="weather--icon">
+        <div class="weather--icon" v-if="typeof isDay === 'boolean'">
             <img v-bind:src="require( isDay ? '../../../public/sun.png' :'../../../public/moon.png')" alt="icon"/>
         </div>
       </div>
@@ -64,7 +64,11 @@ export default {
      .weather--info {
          z-index: 5;
          flex: 1;
+         .marker--icon{
+             font-size: 20px;
+         }
          .city--name{
+             margin-bottom:3px;
              font-size: 25px;
              font-weight: 700;
          }

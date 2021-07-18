@@ -17,7 +17,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { addCity } from "../../../Utilites/Utilites";
+import { addCity } from "../../../Utilities/Utilites";
 export default {
     computed: {
          ...mapGetters("toggleKeys", ["getKeys"]),

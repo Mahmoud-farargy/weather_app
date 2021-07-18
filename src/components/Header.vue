@@ -56,7 +56,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { refreshCitiesResults, notify } from "../Utilites/Utilites";
+import { refreshCitiesResults, notify } from "../Utilities/Utilites";
 import moment from "moment-timezone";
 
 export default {
@@ -70,7 +70,7 @@ export default {
         ...mapGetters("toggleKeys", ["getKeys"]),
         ...mapGetters("savedResults", ["getResultList", "getCityTimezone", "getResultsCopy"]),
         formattedCityDate(){
-            return moment().tz(this.getCityTimezone).format('ddd, MMM DD');
+            return moment().tz(this.getCityTimezone)?.format('ddd, MMM DD');
         }
     },
     methods: {

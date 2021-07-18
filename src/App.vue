@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import { refreshCitiesResults } from "./Utilites/Utilites";
+import { refreshCitiesResults } from "./Utilities/Utilites";
 import appConfig from "./app-config";
 import { mapGetters } from "vuex";
 import Modals from "./components/Modals/Modals.vue";

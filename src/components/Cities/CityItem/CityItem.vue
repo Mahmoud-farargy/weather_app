@@ -20,7 +20,7 @@
             </video>
             
             <div class="weather--bg--overlay"></div>
-            <div @click.stop="delCity" class="del--city" v-if="getKeys.editCities">
+            <div @click.stop="delCity" class="del--city" v-if="getKeys.editCities && !getKeys.isSearchBarOpen">
                 <i class="fas fa-trash-alt"></i>
             </div>
         </div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { deleteCity, notify, confirmDialog } from "../../../Utilites/Utilites";
+import { deleteCity, notify, confirmDialog } from "../../../Utilities/Utilites";
 import { mapGetters } from "vuex";
 
 export default {

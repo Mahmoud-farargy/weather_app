@@ -1,5 +1,5 @@
 <template>
-    <div id="dailyWeatherItem" class="flex-row">
+    <div @click="changeIndex" id="dailyWeatherItem" :class="{'active--hourly--item' : getKeys.isDailyDetailsOpen && (currentIndex === index)}" class="flex-row">
         <div class="daily--item--inner">
             <span>{{new Date(item.dt * 1000).toLocaleString("en-us", {weekday: "long"})}}</span>
         </div>
@@ -14,12 +14,24 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
     props: [
         "item",
         "isDay",
-        "getDegree"
-    ]
+        "getDegree",
+        "index",
+        "updateDayIndex",
+        "currentIndex",
+    ],
+    computed: {
+        ...mapGetters("toggleKeys", ["getKeys"]),
+    },
+    methods: {
+        changeIndex() {           
+            this.updateDayIndex(this.index, this.currentIndex !== this.index);
+        }
+    }
 }
 </script>
 
@@ -29,6 +41,8 @@ export default {
         align-items: center;
         justify-content: space-between;
         color : var(--white);
+        padding: 6px 13px;
+        cursor: pointer;
         div{
             flex:1 ;
         }
@@ -50,9 +64,6 @@ export default {
                 font-weight: 20px;
                 margin-right: 12px;
             }
-            // .low{
-            //     color:#e4e4e4;
-            // }
         }
     }
 </style>

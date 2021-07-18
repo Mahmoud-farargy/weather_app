@@ -8,7 +8,7 @@ const errorMsg = " An error occurred. try again later";
 const handleLoading = (key, val) => {
   store.dispatch("toggleKeys/mutateKeys", { key, val });
 };
-// export const generateNewId = () => `${Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, 20)}_${Math.random() * 10}`;
+export const generateNewId = () => `${Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, 20)}_${Math.random() * 10}`;
 export const notify = ({ type, msg }) => {
   Vue.$toast.open({
     message: msg,
@@ -191,7 +191,7 @@ export const deleteCity = ( cityEl ) => {
                 deleteFunc(indexByName);
               }else{
                 // If both ways failed,
-                // then show an error message indicating that the city does not exist in the data
+                // then will show an error message indicating that the city does not exist in the data
                 handleLoading("isDeletingCity", false);
                 notify({ type: "error", msg: errorMsg });
                 reject();

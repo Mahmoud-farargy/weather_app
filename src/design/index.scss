@@ -6,6 +6,17 @@
 // fonts
 @import url(../assets/Fonts/Quicksand/quicksand.css);
 :root{
+    // font-sizes
+    --font-size: 14px;
+    --font-size-x-small: 0.75em;
+    --font-size-small: 0.875em;
+    --font-size-medium: 0.950em;
+    --font-size-large: 1.25em;
+    --font-size-x-large: 1.5em;
+    //font weights
+    --font-weight: 400;
+    --font-weight-medium: 500;
+    --font-weight-heavy: 700;
     //padding
     --component-padding-top: 81px;
     // font styles
@@ -22,12 +33,16 @@
     --gray: #dbdbdb;
     --light-gray:#fafafa;
     --shadow-white: #efefef;
+    --transparent-white-lev1: rgba(255,255,255,0.1);
+    --transparent-white-lev3: rgba(255,255,255,0.3);
     // shadow
     --slight-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
     // borders
     --weather-border-bottom: 1px solid rgba(255,255, 255,0.7);
     //transitions
-    --transition-mild:  500ms ease all;
+    --transition-mild: 500ms ease all;
+    // radius
+    --el-radius: 5px;
 }
 // global classes
 .flex-row{
@@ -87,6 +102,13 @@ ul, ol, dl {
     max-width: 1024px;
     width:100%;
 }
+#hourlyWeatherItem, #dailyWeatherItem {
+    &:hover{
+        border-radius: var(--el-radius);
+        transition: var(--transition-mild);
+        background-color: var(--transparent-white-lev1);  
+    }
+}
 // xxx--global classes---xxx
 // ANIMATIONS
 // fade
@@ -106,6 +128,41 @@ ul, ol, dl {
     animation-iteration-count: 1;
     animation-play-state: running;
 }
+// huge-inc
+.huge-inc-enter {
+    opacity: 0;
+    
+    .hourly--details--inner {
+      opacity: 0.4;
+      transform: translateY(-5%) rotateX(35deg);
+    }
+  }
+  
+  .huge-inc-enter-active, .huge-inc-leave-active {
+    transition: opacity 0.4s;
+    
+    .hourly--details--inner {
+      transition: transform 0.4s, opacity 0.4s;
+    }
+  }
+  
+  .huge-inc-enter-to {
+    
+    .hourly--details--inner {
+      opacity: 1;
+      transform: rotateX(0deg);
+    }
+    
+  }
+  
+  .huge-inc-leave-to {
+    opacity: 0;
+    
+    .hourly--details--inner {
+      transform: translateY(5%) rotateX(-35deg);
+    }
+  }
+  
 //  loading
   .weather--loading{
     @keyframes spin {
