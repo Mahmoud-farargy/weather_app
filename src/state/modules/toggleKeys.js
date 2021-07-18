@@ -7,7 +7,9 @@ export const state = {
         isAddingCity: false,
         isDeletingCity: false,
         isGettingWeather: false,
-        isSearchBarOpen: false
+        isSearchBarOpen: false,
+        isHoursDetailsOpen: false,
+        isDailyDetailsOpen: false
     }
 }
 export const mutations = {

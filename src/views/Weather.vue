@@ -19,7 +19,7 @@
     </div>
     <div v-else class="unavailable--data flex-column">
         <h3>
-          Not available cities
+          No available cities
         </h3>
     </div>
   </div>
@@ -111,13 +111,14 @@ export default {
     // API().get(`/data/2.5/air_pollution?lat=50.8476&lon=14.0625&appid=${APIKey}`).then(res => {
     //   console.log(res);
     // })
-    
   }
 }
 </script>
 
 <style lang="scss" scoped>
  #weather{
+    user-select: none;
+    -webkit-user-select: none;
     #weather--view{
       padding-top: var(--component-padding-top);
       color: #000;

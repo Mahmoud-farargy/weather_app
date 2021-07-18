@@ -2,31 +2,86 @@
     <section id="hourlyWeatherList">
         <div class="container">
             <ul  class="hourly--list flex-row">
-                <li class="w-100 h-100" v-for="(timeItem, index) in alteredHourlyList" v-bind:key="index">
-                    <HourlyWeatherItem :timeItem="timeItem" :getDegree="getDegree"/>
+                <li class="hourly--list--item" v-for="(timeItem, index) in alteredHourlyList" v-bind:key="index">
+                    <HourlyWeatherItem :updateHourIndex="updateHourIndex" :timeItem="timeItem" :currentIndex="currentIndex" :getDegree="getDegree" :index="index"/>
                 </li>
             </ul>
+             <transition name="huge-inc">
+                <WeatherDetails :detailsList="detailsList" v-if="Object.keys(detailsList).length > 0 && currentIndex !== null" :listTitle="formattedTime" :openDetails="getKeys.isHoursDetailsOpen" :getDegree="getDegree" :alteredHourlyList="alteredHourlyList" />
+             </transition>
         </div>
     </section>
 </template>
 
 <script>
 import HourlyWeatherItem from "./HourlyWeatherItem/HourlyWeatherItem";
+import WeatherDetails from "../WeatherDetails/WeatherDetails";
+import { mapActions, mapGetters } from 'vuex';
+import moment from "moment-timezone";
 
 export default { 
     name: "HourlyWeather",
+    data(){
+        return {
+            currentIndex: null,
+            currentElement: {},
+        }
+    },
     props: [
         "loading",
         "currentCity",
         "getDegree"
     ],
+    watch: {
+        'getKeys.isHoursDetailsOpen'(val){
+            if(!val){
+                this.currentIndex = null
+            }
+        },
+        currentIndex(val) {
+            if(typeof val !== "undefined"){
+                this.currentElement = this.currentCity?.hourly?.[val] ? this.currentCity.hourly[val] : [];
+            }
+        },
+    },
     computed: {
+        ...mapGetters("toggleKeys", ["getKeys"]),
         alteredHourlyList() {
             return (this.currentCity && this.currentCity.hourly) ? this.currentCity.hourly?.slice(0,48) : [];
-        }
+        },
+        detailsList() {
+            const { getDegree, currentElement } = this;
+            return currentElement ? {
+                "UVI Index": typeof currentElement.uvi !== 'undefined' ? currentElement.uvi : 0,
+                "Temperature": typeof currentElement.temp !== 'undefined' ? `${getDegree(currentElement.temp)}°`: "",
+                "Humidity": typeof currentElement.humidity !== 'undefined' ? `${currentElement.humidity}%` : "",
+                "Pressure": typeof currentElement.pressure !== 'undefined' ? `${currentElement.pressure } hPa`: "",
+                "Clouds": typeof currentElement.clouds !== 'undefined' ? `${currentElement.clouds }%`: "",
+                "Description": typeof currentElement.weather?.[0]?.description !== 'undefined' ? currentElement.weather?.[0]?.description:  "",
+                "Wind speed": typeof currentElement.wind_speed !== 'undefined' ?  `${currentElement.wind_speed} mi/h`: "",
+                "Wind Degree": typeof currentElement.wind_deg !== 'undefined' ?  `${currentElement.wind_deg}°` : "",
+                "Wind Gust": typeof currentElement.wind_gust  !== 'undefined' ?  `${currentElement.wind_gust} mph` :"",
+            }: {};
+        },
+        formattedTime(){
+            return (this.currentElement && this.currentElement.dt) && moment(this.currentElement.dt * 1000).format('ddd, MMM DD h:mm A');
+        },
     },
     components:{
-        HourlyWeatherItem
+        HourlyWeatherItem,
+        WeatherDetails,
+
+    },
+    methods:{
+        ...mapActions("toggleKeys", ["mutateKeys"]),
+        updateHourIndex(index, val){
+            this.currentIndex = index;
+            this.mutateKeys({key: "isHoursDetailsOpen", val});
+            if(this.getKeys.isDailyDetailsOpen){
+                 this.mutateKeys({key: "isDailyDetailsOpen", val: false});
+            }
+       
+        }
     }
 }
 </script>
@@ -46,6 +101,11 @@ export default {
             &::-webkit-scrollbar{
                 display: none;
                 width:0;
+            }
+            .hourly--list--item{
+                width: 100%;
+                height: 100%;
+                margin-right: 1px;
             }
          }
         @media only screen and (max-width: 670px) {

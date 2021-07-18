@@ -6,7 +6,7 @@
                 <img :src="require(`../../../../public/conditions/${getPrecipitation > 0 ? ( getKeys.isDayWeather ? '10d' : '10n') : '04d'}.svg`)" :alt="formattedTime + 'weather'"/>
             </span>
             <span>
-                {{Math.round(getPrecipitation /1 * 100)}}%
+                {{Math.round(getPrecipitation)}}%
             </span>
         </div>
     </div>
