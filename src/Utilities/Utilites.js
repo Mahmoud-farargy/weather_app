@@ -8,7 +8,11 @@ const errorMsg = " An error occurred. try again later";
 const handleLoading = (key, val) => {
   store.dispatch("toggleKeys/mutateKeys", { key, val });
 };
-export const generateNewId = () => `${Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, 20)}_${Math.random() * 10}`;
+export const generateNewId = () =>
+  `${Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, "")
+    .substr(0, 20)}_${Math.random() * 10}`;
 export const notify = ({ type, msg }) => {
   Vue.$toast.open({
     message: msg,
@@ -63,14 +67,28 @@ export const refreshCitiesResults = () => {
                 })
               );
             };
-            getCitiesInfo().then((finalResults) => {
-              const stringifiedData = JSON.parse(JSON.stringify(finalResults));
-              store.dispatch("savedResults/updateResultList", stringifiedData);
-              store.dispatch("savedResults/updateResultsCopy", stringifiedData);
-              resolve(stringifiedData);
-            }).catch(() => {
-              notify({ type: "error", msg: "Failed to fetch data. This might be because your requests limit has been expired. If that's the case, then come back tommorrow." });
-            });
+            getCitiesInfo()
+              .then((finalResults) => {
+                const stringifiedData = JSON.parse(
+                  JSON.stringify(finalResults)
+                );
+                store.dispatch(
+                  "savedResults/updateResultList",
+                  stringifiedData
+                );
+                store.dispatch(
+                  "savedResults/updateResultsCopy",
+                  stringifiedData
+                );
+                resolve(stringifiedData);
+              })
+              .catch(() => {
+                notify({
+                  type: "error",
+                  msg:
+                    "Failed to fetch data. This might be because your requests limit has been expired. If that's the case, then come back tommorrow.",
+                });
+              });
           } else {
             reject([]);
             handleLoading("isLoading", false);
@@ -96,7 +114,7 @@ export const updateParts = (prop, newVal) => {
         .then(() => {
           refreshCitiesResults();
           prop === "cities" &&
-          store.dispatch("savedResults/updateCities", newVal);
+            store.dispatch("savedResults/updateCities", newVal);
           resolve();
         })
         .catch((err) => {
@@ -119,7 +137,7 @@ export const addCity = (cityToAdd) => {
     ) {
       API()
         .get(`data/2.5/weather?q=${cityToAdd}&units=imperial&appid=${APIKey}`)
-        .then(fetchInfo => {
+        .then((fetchInfo) => {
           const city = fetchInfo.data;
           db.collection("users")
             .doc("dzN43wnwHdQCO691DyiR")
@@ -127,17 +145,18 @@ export const addCity = (cityToAdd) => {
             .then((data) => {
               // gets data
               let citiesCopy = JSON.parse(JSON.stringify(data?.data()?.cities));
-              
+
               const objToAdd = {
                 cityName: cityToAdd,
-                cityId:  city.id
-              } 
+                cityId: city.id,
+              };
               let newArr = [objToAdd, ...citiesCopy];
-              newArr = Array.from(new Set(newArr?.map((itemId) => itemId.cityName)))
-              .map((ID) => newArr?.find((el) => el.cityName === ID));
+              newArr = Array.from(
+                new Set(newArr?.map((itemId) => itemId.cityName))
+              ).map((ID) => newArr?.find((el) => el.cityName === ID));
               updateParts("cities", newArr);
               handleLoading("isAddingCity", false);
-              notify({ type: "success", msg:`${ city.name } has been added.`});
+              notify({ type: "success", msg: `${city.name} has been added.` });
               resolve();
             })
             .catch(() => {
@@ -162,40 +181,44 @@ export const addCity = (cityToAdd) => {
   });
 };
 
-export const deleteCity = ( cityEl ) => {
+export const deleteCity = (cityEl) => {
   handleLoading("isDeletingCity", true);
   return new Promise((resolve, reject) => {
     db.collection("users")
       .doc("dzN43wnwHdQCO691DyiR")
       .get()
       .then((data) => {
-        const deleteFunc =(index) =>{
+        const deleteFunc = (index) => {
           citiesCopy.splice(index, 1);
           updateParts("cities", citiesCopy);
           handleLoading("isDeletingCity", false);
-          notify({ type: "success", msg: "City has been deleted."});
+          notify({ type: "success", msg: "City has been deleted." });
+          store.dispatch("toggleKeys/mutateKeys", {key: "editCities", val: false});
           resolve();
-        }
+        };
         const myCities = data.data()?.cities;
         // Attempts to delete by city id first
         var citiesCopy = JSON.parse(JSON.stringify(myCities));
-        const indexById = (citiesCopy && citiesCopy.length >0) && citiesCopy.map((city) => city.cityId).indexOf(cityEl.id);
+        const indexById =
+          citiesCopy &&
+          citiesCopy.length > 0 &&
+          citiesCopy.map((city) => city.cityId).indexOf(cityEl.id);
         if (indexById !== -1) {
           deleteFunc(indexById);
         } else {
-           // and if some reason that failed, then it will attempt to delete by city name
+          // and if some reason that failed, then it will attempt to delete by city name
           const indexByName = citiesCopy
-                  .map((city) => city.cityName)
-                  .indexOf(cityEl.name);
-              if(indexByName !== -1 ){
-                deleteFunc(indexByName);
-              }else{
-                // If both ways failed,
-                // then will show an error message indicating that the city does not exist in the data
-                handleLoading("isDeletingCity", false);
-                notify({ type: "error", msg: errorMsg });
-                reject();
-              }       
+            .map((city) => city.cityName)
+            .indexOf(cityEl.name);
+          if (indexByName !== -1) {
+            deleteFunc(indexByName);
+          } else {
+            // If both ways failed,
+            // then will show an error message indicating that the city does not exist in the data
+            handleLoading("isDeletingCity", false);
+            notify({ type: "error", msg: errorMsg });
+            reject();
+          }
         }
       })
       .catch((err) => {

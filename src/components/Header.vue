@@ -16,7 +16,7 @@
             <nav class="flex-row container">
                 <router-link class="logo-anchor" :to="{name: 'Home'}">
                     <span class="logo">
-                        Weather
+                        {{logoText}}
                     </span>
                 </router-link>
                 <ul class="header--actions flex-row">
@@ -58,12 +58,14 @@
 import { mapActions, mapGetters } from 'vuex';
 import { refreshCitiesResults, notify } from "../Utilities/Utilites";
 import moment from "moment-timezone";
+import { logoText } from "@/app-config";
 
 export default {
     data () {
         return {
             currentRouteName: "home",
-            searchCity: ""
+            searchCity: "",
+            logoText
         }
     },
     computed: {

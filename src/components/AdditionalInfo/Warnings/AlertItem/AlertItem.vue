@@ -38,6 +38,7 @@ export default {
 <style lang="scss" scoped>
     #alertItem{
         .alert--event{
+            text-transform: capitalize;
             color: #d23f31;
             font-weight: 700;
             font-size: 20px;

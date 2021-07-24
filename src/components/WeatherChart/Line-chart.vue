@@ -8,7 +8,14 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         legend: {
-           fontColor: this.isDay ? "#e4e4e4" :'#d6d6d6'
+           fontColor: this.isDay ? "#e4e4e4" :'#d6d6d6',
+           labels: {
+                  fontColor: this.isDay ? "#e4e4e4" :'#fff'
+               }
+            
+        },
+        title: {
+            fontColor: this.isDay? "#e4e4e4" : '#fff',
         },
         scales: {
           yAxes: [{
@@ -25,27 +32,16 @@ export default {
       }
     }
   },
-  props: ["chartData", "currentCity", "isDay"],
+  props: ["chartData", "isDay"],
   extends: Line,
   watch: {
-    chartData() {
+    chartData(val) {
           this.renderChart({
-          labels: this.chartData.map(el => el.labels),
-          datasets: [
-            {
-              label: 'Temperature',
-              backgroundColor: this.isDay? "#cecece" :"#27699b",
-              data: this.chartData.map(el => el.temps)
-            },
-            {
-              label: 'Feels like',
-              backgroundColor:"#1d4da7",
-              data: this.chartData.map(el => el.feelsLike)
-            }
-          ]
+          labels: val?.labels,
+          datasets: val?.sets
         }, this.options);
       },
-  },
+  }
 }
 </script>
 
