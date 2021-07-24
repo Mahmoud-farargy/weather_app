@@ -7,24 +7,11 @@
 <script>
 import LineChart from "./Line-chart";
 export default {
-    props:[
-        "currentCity",
-        "getDegree",
-        "isDay"
-    ],
-    computed: {
-        chartData() {
-            return (this.currentCity && this.currentCity?.hourly?.length > 0) ?
-            this.currentCity?.hourly.slice(1,24).map(el => {
-                return {
-                    labels: `${new Date(el.dt * 1000).toLocaleString('en-us', {weekday: "short"})} ${new Date(el.dt * 1000).toLocaleString('en-us', {hour: "numeric"})}`,
-                    temps: this.getDegree(el.temp),
-                    feelsLike: this.getDegree(el.feels_like),
-                    wind: el.wind_speed,
-                }
-            })
-            : [];
-        }
+    props:{
+        chartData: Object,
+        currentCity: Object,
+        getDegree: Function,
+        isDay: Boolean
     },
     components: {
         LineChart

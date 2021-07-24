@@ -1,8 +1,8 @@
 <template>
-    <div v-if="openDetails && Object.keys(this.detailsList).length > 0" id="hourlyDetails">
+    <div ref="autoScroll" v-if="openDetails && Object.keys(this.detailsList).length > 0" id="hourlyDetails">
       <h3 v-if="listTitle" class="section--title">{{listTitle}}</h3>
-      <div class="hourly--details--inner">
-        <DetailsItem v-for="(el, index) in Object.keys(renderList).slice(0,limit)" :detailsList="renderList" :key="index" :title="el" :val="renderList[el]"  />
+      <div class="hourly--details--inner" >
+        <DetailsItem v-for="(el, index) in Object.keys(renderList).slice(0,limit)"  :detailsList="renderList" :key="index" :title="el" :val="renderList[el]"  />
       </div>
       <span class="chevron--down--icon flex-column">
         <i @click="toggleVisibility" class="highlight--on--active" :class="showAllDetails ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
@@ -55,6 +55,9 @@ export default {
       this.showAllDetails = !this.showAllDetails;
     }
   },
+  mounted(){
+    this.$refs?.autoScroll?.scrollIntoViewIfNeeded({behavior: "smooth", block: "end"});
+  }
 };
 </script>
 

@@ -1,6 +1,7 @@
 {
     "baseURL": "https://api.openweathermap.org/",
     "title": "WeatherApp",
+    "logoText": "Weather",
     "description": "Views latest weather updates",
     "author": "Mahmoud Farargy"
 }

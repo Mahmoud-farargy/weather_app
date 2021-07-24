@@ -1,6 +1,8 @@
 <template>
   <section v-if="currentCity" id="additionalInfo" class="flex-row">
-    <div class="container">
+    <div class="container flex-column">
+        <!-- Section title -->
+        <h3 class="forecast--title mb-3" :style="{color: isDay ? '#fff' :'#acfcff'}">Today's Forecast</h3>
         <div class="additional--info--inner flex-row">
             <div v-if="currentCity.sys.sunrise">
                 <span>Sunrise</span>
@@ -54,12 +56,7 @@
 
         </div>
         <div v-if="currentCity.alerts && currentCity.alerts.length > 0">
-                <!-- <span>Longitude</span> -->
-               <ul class="alerts--list">
-                   <li v-for="(alert, index) in currentCity.alerts" :key="index" >
-                       <AlertItem :alert="alert" />
-                   </li>
-               </ul>
+            <Warnings :alerts="currentCity.alerts" :isDay="isDay" />
         </div>  
     </div>
 
@@ -67,13 +64,14 @@
 </template>
 
 <script>
-import AlertItem from './AlertItem/AlertItem';
+import Warnings from './Warnings/Warnings';
 export default {
     props: [
         "currentCity",
+        "isDay"
     ],
     components: {
-        AlertItem
+        Warnings
     },
 }
 </script>
@@ -105,16 +103,5 @@ export default {
         }
 
      }
-    .alerts--list{
-        margin-top: 20px;
-        list-style: none;
-        padding: 0;
-        li{
-            margin-bottom: 15px;
-            &:last-of-type{
-                margin-bottom: 0;
-            }
-        }
-    }
  }
 </style>
