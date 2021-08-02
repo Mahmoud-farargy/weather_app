@@ -3,12 +3,12 @@
         <div class="daily--item--inner">
             <span>{{new Date(item.dt * 1000).toLocaleString("en-us", {weekday: "long"})}}</span>
         </div>
-        <div class="condition flex-row">
-            <img :src="require(`../../../../public/conditions/${item.weather[0].icon}.svg`)" alt="daily item" />
+        <div :title="item.weather[0].description" class="condition flex-row">
+            <img loading="lazy" :src="require(`../../../../public/conditions/${item.weather[0].icon}.svg`)" alt="daily item" />
         </div>
         <div class="daily--weather flex-row">
-            <span class="high">{{getDegree((item.temp && item.temp.max) && item.temp.max)}}&deg;</span>
-            <span class="low" :style="{color: isDay ? '#e4e4e4' : '#9b9d9e'}">{{getDegree((item.temp && item.temp.min) && item.temp.min)}}&deg;</span>
+            <span title="High" class="high">{{getDegree((item.temp && item.temp.max) && item.temp.max)}}&deg;</span>
+            <span title="Low" class="low" :style="{color: isDay ? '#e4e4e4' : '#a8a8a8'}">{{getDegree((item.temp && item.temp.min) && item.temp.min)}}&deg;</span>
         </div>
     </div>
 </template>

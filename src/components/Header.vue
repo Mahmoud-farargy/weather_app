@@ -21,11 +21,11 @@
                 </router-link>
                 <ul class="header--actions flex-row">
                     <div v-if="getResultList.length > 0" class="flex-row">
-                        <li @click="openSearchBar(true)" :class="{'del--active' : getKeys.isSearchBarOpen}" class="highlight--on--active"><i class="fas fa-search"></i></li>
-                        <li @click="delItems" :class="{'del--active' : getKeys && getKeys.editCities}" class="highlight--on--active"><i class="far fa-edit"></i></li>
-                        <li @click="refreshApp" class="highlight--on--active"><i class="fas fa-sync"></i></li>  
+                        <li title="Search for an added city" @click="openSearchBar(true)" :class="{'del--active' : getKeys.isSearchBarOpen}" class="highlight--on--active"><i class="fas fa-search"></i></li>
+                        <li title="Delete a city" @click="delItems" :class="{'del--active' : getKeys && getKeys.editCities}" class="highlight--on--active"><i class="far fa-edit"></i></li>
+                        <li title="Refresh" @click="refreshApp" class="highlight--on--active"><i class="fas fa-sync"></i></li>  
                     </div>
-                    <li @click="toggleModal('addCity')" class="highlight--on--active"><i class="fas fa-plus"></i></li>
+                    <li title="Add a city" @click="toggleModal('addCity')" class="highlight--on--active"><i class="fas fa-plus"></i></li>
                 </ul>
             </nav>
         </header>  
@@ -37,13 +37,13 @@
     'day--weather': getKeys.isDayWeather }">
      
          <nav class="flex-row container ">
-            <button class="nativate--back--btn highlight--on--active" @click="goBack">
+            <button title="Go back" class="nativate--back--btn highlight--on--active" @click="goBack">
                <i class="fas fa-chevron-left"></i>
             </button>
-            <span>
+            <span title="Today's date in that city">
                 {{formattedCityDate}}
             </span>
-            <span @click="toggleTemp" class="fah--cel--btn highlight--on--active">
+            <span title="Change Metric" @click="toggleTemp" class="fah--cel--btn highlight--on--active">
                 &deg; {{ getKeys && getKeys.isFahrenheit ? 'F' : 'C'}}
             </span>
          </nav>
@@ -64,7 +64,6 @@ export default {
     data () {
         return {
             currentRouteName: "home",
-            searchCity: "",
             logoText
         }
     },
@@ -217,6 +216,10 @@ export default {
         user-select: none;
         -webkit-user-select: none;
         font-weight: 800;
+        &:hover{
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
      }
      nav{
         width: 100%;
