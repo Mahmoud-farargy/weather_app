@@ -6,7 +6,7 @@
             <!-- Minutely precipitation forecast -->
             <ul  class="hourly--list flex-row">
                 <li class="w-100 h-100" v-for="(timeItem, index) in alteredMinutelyList" v-bind:key="index">
-                    <MinutelyWeatherItem :timeItem="timeItem" :getDegree="getDegree" />
+                    <MinutelyWeatherItem :timeItem="timeItem" :getDegree="getDegree" :index="index" />
                 </li>
             </ul>
         </div>

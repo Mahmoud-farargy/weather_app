@@ -1,10 +1,15 @@
 <template>
     <div @click="changeIndex" :class="{'active--hourly--item' : getKeys.isHoursDetailsOpen && (currentIndex === index)}" id="hourlyWeatherItem">
         <div class="hourly--item--inner flex-column">
-            <span>{{ formattedTime }}</span>
+            <span v-if="index !== 0">
+                {{ formattedTime }}
+            </span>
+            <span v-else>
+                Now
+            </span>
              <span>{{ formattedByDay }}</span>
             <span>
-                <img :src="require(`../../../../public/conditions/${timeItem.weather[0].icon}.svg`)" :alt="formattedTime + 'weather'"/>
+                <img loading="lazy" :src="require(`../../../../public/conditions/${timeItem.weather[0].icon}.svg`)" :alt="formattedTime + 'weather'"/>
             </span>
             <span v-if=" timeItem.temp">
                 {{timeItem && getDegree(timeItem.temp)}}&deg;

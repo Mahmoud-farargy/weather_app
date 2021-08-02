@@ -5,39 +5,40 @@
       class="container flex-column current--weather--inner"
     >
       <div class="weather--info flex-column">
-        <span class="city--name"
+        <span :title="`Current Location: ${currentCity.name} in ${currentCity.sys.country}`" class="city--name"
           ><i class="fas fa-map-marker-alt marker--icon"></i>
           {{ currentCity.name }},
           {{ currentCity.sys.country && currentCity.sys.country }}</span
         >
-        <span class="city--time">{{ formattedTime }}</span>
-        <span class="current--temperture"
+        <span :title="`Current time in ${currentCity.name}`" class="city--time">{{ formattedTime }}</span>
+        <span title="Main Temperature" class="current--temperture"
           >{{ getDegree(currentCity.main.temp) }}&deg;</span
         >
         <div class="high--low--temperture flex-row">
-          <div class="high flex-row">
+          <div title="High" class="high flex-row">
             <i class="fas fa-chevron-up"></i>
             <span>{{ getDegree(currentCity.main.temp_max) }}&deg;</span>
           </div>
-          <div class="low flex-row">
+          <div title="Low" class="low flex-row">
             <i class="fas fa-chevron-down"></i>
             <span>{{ getDegree(currentCity.main.temp_min) }}&deg;</span>
           </div>
         </div>
-        <span class="condition">{{ currentCity.weather[0].description }}</span>
+        <span title="Weather description" class="condition">{{ currentCity.weather[0].description }}</span>
         <span class="feels--like"
           >Feels like {{ getDegree(currentCity.main.feels_like) }}&deg;</span
         >
       </div>
       <div class="weather--icon flex-column" v-if="typeof isDay === 'boolean'">
         <img
+         loading="lazy"
          class="fadeEffect"
           v-bind:src="
             require(isDay
               ? '../../../public/sun.png'
               : '../../../public/moon.png')
           "
-          alt="icon"
+          :alt="`${isDay ? 'Daytime' : 'Nighttime'}`"
         />
       </div>
     </div>

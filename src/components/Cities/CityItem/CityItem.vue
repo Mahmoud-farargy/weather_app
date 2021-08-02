@@ -1,23 +1,19 @@
 <template>
   <transition name="fade" mode="out-in">
-        <div :class="{'disabled': getKeys && getKeys.isLoading || getKeys.isDeletingCity}" @click="goToWeather" id="cityItem" class="flex-column">
-        <span>{{item && item.name}}</span>
+        <div :title="item && item.name" :class="{'disabled': getKeys && getKeys.isLoading || getKeys.isDeletingCity}" @click="goToWeather" id="cityItem" class="flex-column">
+        <span v-if="item && item.name" >{{item.name}}</span>
         
         <div class="weather flex-row">
             <span>{{Math.round((item && item.main && item.main.temp) ? (item.main.temp) : 0)}}&deg;</span>
-            <img :src="require(`../../../../public/conditions/${(item && item.weather && item.weather[0] && item.weather[0].icon) ? (item.weather[0].icon) : '01d' }.svg`)" :alt="`${item.name} temperature`"/>
+            <img loading="lazy" :src="require(`../../../../public/conditions/${(item && item.weather && item.weather[0] && item.weather[0].icon) ? (item.weather[0].icon) : '01d' }.svg`)" :alt="`${item.name} temperature`"/>
             
         </div>
         
-        <div class="weather--video">
-            <video
-            autoplay
-            loop
-            muted
-            :src="require(`../../../../public/videos/${(item && item.weather && item.weather[0] && item.weather[0].icon)  ? (handleVideoPaths(item.weather[0].icon)) : '01d' }.mp4`)"
-            >
-            
-            </video>
+        <div class="weather--pic">
+            <img
+            loading="lazy"
+            :src="require(`../../../../public/pictures/${(item && item.weather && item.weather[0] && item.weather[0].icon)  ? (handlePicturePaths(item.weather[0].icon)) : '01d' }.png`)"
+            />
             
             <div class="weather--bg--overlay"></div>
             <div @click.stop="delCity" class="del--city" v-if="getKeys.editCities && !getKeys.isSearchBarOpen">
@@ -59,7 +55,7 @@ export default {
           }
 
       },
-      handleVideoPaths(iconName) {
+      handlePicturePaths(iconName) {
           const lowerCasedName = iconName.toLowerCase();
           if(lowerCasedName === "03d" || lowerCasedName === "04d"){
               return"02d";
@@ -113,7 +109,7 @@ export default {
                 object-fit: contain;
             }
         }
-        .weather--video{
+        .weather--pic{
             overflow: hidden;
             position: absolute;
             top:0;
@@ -121,7 +117,8 @@ export default {
             height: 100%;
             width: 100%;
 
-            video{
+           img{
+               object-fit: cover;
                 height: 100%;
                 @media only screen and (min-width: 1000px){
                     height: auto;
