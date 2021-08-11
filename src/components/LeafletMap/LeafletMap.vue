@@ -57,17 +57,22 @@ export default {
 }
 </script>
 
-<style >
+<style>
         #mapid {
+            border-radius: 4px;
             width:100%;
             z-index: 10;
-            height: 250px;
+            height: 350px;
         }
         /* .leaflet-tile {
             filter: hue-rotate(180deg) invert(80%);
             -webkit-filter: hue-rotate(180deg) invert(80%);
         } */
         @media only screen and (max-width: 670px) {
+                  #mapid {
+                      height: 250px;
+                      border-radius: 0;
+                  }
                   #leafletMap.container {
                       padding-left: 0;
                       padding-right: 0;

@@ -7,7 +7,9 @@
     <!-- Modals -->
     <Modals v-if="modalsState && Object.keys(modalsState).length > 0 && Object.values(modalsState).some(el => el === true)" />
     <!-- Routes -->
-    <RouterView :key="$route.fullPath"/>
+    <transition name="fadepage">
+       <RouterView :key="$route.fullPath"/>
+    </transition>
   </div>
 </template>
 <script>
@@ -33,8 +35,7 @@ export default {
     Modals
   },
   computed: {
-    ...mapGetters("modals", {modalsState:"getModals"}),
-    ...mapGetters("savedResults", ["getResultList"]),
+    ...mapGetters("modals", {modalsState:"getModals"})
   },
   mounted() {
     refreshCitiesResults();

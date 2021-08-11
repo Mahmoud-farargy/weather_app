@@ -51,9 +51,8 @@ export default {
                         this.$router.push(`/weather/${this.item.name}`);
                 }else{
                     notify({type: "error", msg: "An error occurred."});
-                }    
+                }
           }
-
       },
       handlePicturePaths(iconName) {
           const lowerCasedName = iconName.toLowerCase();

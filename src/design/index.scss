@@ -196,7 +196,16 @@ ul, ol, dl {
       -webkit-animation: spin ease 1000ms infinite;
     }
   }
-
+.fadepage-enter{
+    opacity: 0;
+  }
+  .fadepage-enter-active{    
+      animation: fadeIn .1s linear forwards;
+  }
+  .fadepage-leave-active{
+    animation: fadeOut .1s linear forwards;
+  }
+// Fade in
 @keyframes fadeIn {
     0%{
         opacity: 0;
@@ -220,5 +229,30 @@ ul, ol, dl {
     100%{
         opacity: 1;
     }
+}
+// Fade out
+@keyframes fadeOut {
+  0%{
+      opacity: 1;
+  }
+  100%{
+      opacity: 0;
+  }
+}
+@-webkit-keyframes fadeOut {
+  0%{
+    opacity: 1;
+  }
+  100%{
+      opacity: 0;
+  }
+}
+@-moz-keyframes fadeOut {
+  0%{
+      opacity: 1;
+  }
+  100%{
+      opacity: 0;
+  }
 }
 // xxx---ANIMATIONS---xxx

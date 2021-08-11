@@ -167,7 +167,7 @@ export default {
     .weather--inner {
       overflow: hidden;
       max-width: 1024;
-      margin: 0 auto;
+      margin: 0 auto 30px;
     }
     .weather--inner.container {
       padding: 0;
