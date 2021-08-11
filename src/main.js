@@ -18,7 +18,12 @@ Vue.use(AsyncComputed);
 Vue.use(VueConfirmDialog);
 
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default);
+// Filters
+Vue.filter("trimText",(txt, limit) => {
+  return txt ? (`${txt.split("").length > limit ? txt.split("").slice(0,limit).join("")+"..." : txt}`) : "";
+});
 
+// Vue Instance
 new Vue({
   router,
   store,

@@ -15,6 +15,8 @@ export const mutations = {
             }else{
                 state.modals[type] =  (val !== undefined) ? val : !state.modals[type];
             }   
+        }else {
+            throw "type should be a valid key";
         }
     }
 }

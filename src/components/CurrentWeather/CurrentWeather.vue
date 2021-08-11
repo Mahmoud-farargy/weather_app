@@ -5,12 +5,18 @@
       class="container flex-column current--weather--inner"
     >
       <div class="weather--info flex-column">
-        <span :title="`Current Location: ${currentCity.name} in ${currentCity.sys.country}`" class="city--name"
+        <span
+          :title="`Current Location: ${currentCity.name} in ${currentCity.sys.country}`"
+          class="city--name"
           ><i class="fas fa-map-marker-alt marker--icon"></i>
           {{ currentCity.name }},
           {{ currentCity.sys.country && currentCity.sys.country }}</span
         >
-        <span :title="`Current time in ${currentCity.name}`" class="city--time">{{ formattedTime }}</span>
+        <span
+          :title="`Current time in ${currentCity.name}`"
+          class="city--time"
+          >{{ formattedTime }}</span
+        >
         <span title="Main Temperature" class="current--temperture"
           >{{ getDegree(currentCity.main.temp) }}&deg;</span
         >
@@ -24,15 +30,17 @@
             <span>{{ getDegree(currentCity.main.temp_min) }}&deg;</span>
           </div>
         </div>
-        <span title="Weather description" class="condition">{{ currentCity.weather[0].description }}</span>
+        <span title="Weather description" class="condition">{{
+          currentCity.weather[0].description
+        }}</span>
         <span class="feels--like"
           >Feels like {{ getDegree(currentCity.main.feels_like) }}&deg;</span
         >
       </div>
       <div class="weather--icon flex-column" v-if="typeof isDay === 'boolean'">
         <img
-         loading="lazy"
-         class="fadeEffect"
+          loading="lazy"
+          class="fadeEffect"
           v-bind:src="
             require(isDay
               ? '../../../public/sun.png'
@@ -50,19 +58,36 @@ import moment from "moment-timezone";
 import { mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      formattedTime: "Loading 00:00:00 AM",
+      timeInterval: null,
+    };
+  },
   props: ["isDay", "currentCity", "loading", "getDegree"],
   computed: {
     ...mapGetters("savedResults", { cityTimezone: "getCityTimezone" }),
-    formattedTime() {
-      return `${moment()
-        .tz(
-          this.cityTimezone
-            ? this.cityTimezone
-            : Intl.DateTimeFormat().resolvedOptions().timeZone
-        )
-        .format("dddd h:mm:ss A")}`;
+    timeZone() {
+      return this.cityTimezone
+        ? this.cityTimezone
+        : Intl.DateTimeFormat().resolvedOptions().timeZone;
     },
-  }
+  },
+  methods: {
+    getCityTime() {
+      this.timeInterval = setInterval(() => {
+        this.formattedTime = `${moment()
+          .tz(this.timeZone)
+          .format("dddd h:mm:ss A")}`;
+      }, 1000);
+    },
+  },
+  created() {
+    this.getCityTime();
+  },
+  beforeDestroy() {
+    clearInterval(this.timeInterval);
+  },
 };
 </script>
 

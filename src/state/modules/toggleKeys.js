@@ -16,7 +16,6 @@ export const mutations = {
     mutateKeys: (state, payload) => {
         const { key, val } = payload;
         const trimmedKey = key.trim();
-        
         if(trimmedKey && (Object.keys(state.keys).map(el => el).indexOf(trimmedKey) !== -1)){
             state.keys[trimmedKey] = (val !== undefined) ? val : !state.keys[trimmedKey];
         }
@@ -34,7 +33,7 @@ export const mutations = {
                 }
             })   
         }else{
-            throw "Keys should be an array";
+            throw "'keys' should be an array";
         }
         return;
     }
