@@ -12,6 +12,10 @@
                 <span>Sunset</span>
                 <span>{{new Date(currentCity.sys.sunset * 1000).toLocaleString("en-us", {timeStyle: "short"})}}</span>
             </div>
+            <div v-if="currentCity.weather[0].main">
+                <span>Description</span>
+                <span>{{currentCity.weather[0].main}}</span>
+            </div>
             <div v-if="currentCity.main.humidity">
                 <span>Humidity</span>
                 <span>{{currentCity.main.humidity}}%</span>
@@ -22,7 +26,7 @@
             </div>
             <div v-if="currentCity.wind.speed">
                 <span>Wind speed</span>
-                <span>{{currentCity.wind.speed}} mph
+                <span>{{currentCity.wind.speed}} km/h
                     <span v-if="currentCity.wind.deg" class="wind--degree">
                         <i :style="{transform: `rotateZ(${currentCity.wind.deg}deg)`}" class="fas fa-arrow-up"></i>
                     </span>  

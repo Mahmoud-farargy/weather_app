@@ -100,7 +100,11 @@ export default {
     detailsList() {
       const { getDegree, currentElement } = this;
       return currentElement
-        ? {
+        ? { 
+          Description:
+            typeof currentElement.weather?.[0]?.description !== "undefined"
+                ? currentElement.weather?.[0]?.description
+                : "",
             Day:
               typeof currentElement.temp?.day !== "undefined"
                 ? `${getDegree(currentElement.temp?.day)}°`
@@ -133,10 +137,6 @@ export default {
               typeof currentElement.rain !== "undefined"
                 ? `${currentElement.rain}%`
                 : "",
-            Description:
-              typeof currentElement.weather?.[0]?.description !== "undefined"
-                ? currentElement.weather?.[0]?.description
-                : "",
             Sunrise:
               typeof currentElement.sunrise !== "undefined"
                 ? `${new Date(
@@ -167,7 +167,7 @@ export default {
                 : "",
             "Wind speed":
               typeof currentElement.wind_speed !== "undefined"
-                ? `${currentElement.wind_speed} mi/h`
+                ? `${currentElement.wind_speed} km/h`
                 : "",
             "Wind Degree":
               typeof currentElement.wind_deg !== "undefined"

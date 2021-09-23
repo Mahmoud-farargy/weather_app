@@ -145,7 +145,7 @@ export default {
                 : "",
             "Wind speed":
               typeof currentElement.wind_speed !== "undefined"
-                ? `${currentElement.wind_speed} mi/h`
+                ? `${currentElement.wind_speed} km/h`
                 : "",
             "Wind Degree":
               typeof currentElement.wind_deg !== "undefined"
