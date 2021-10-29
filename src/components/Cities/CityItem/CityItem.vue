@@ -1,26 +1,30 @@
 <template>
   <transition name="fade" mode="out-in">
-        <div :title="item && item.name" :class="{'disabled': getKeys && getKeys.isLoading || getKeys.isDeletingCity}" @click="goToWeather" id="cityItem" class="flex-column">
-        <span v-if="item && item.name" >{{item.name}}</span>
-        
-        <div class="weather flex-row">
-            <span>{{Math.round((item && item.main && item.main.temp) ? (item.main.temp) : 0)}}&deg;</span>
-            <img loading="lazy" :src="require(`../../../../public/conditions/${(item && item.weather && item.weather[0] && item.weather[0].icon) ? (item.weather[0].icon) : '01d' }.svg`)" :alt="`${item.name} temperature`"/>
-            
+        <div :id="item.name.toLowerCase()">
+                        <div :title="item && item.name" :class="{'disabled': getKeys && getKeys.isLoading || getKeys.isDeletingCity}" @click="goToWeather" id="cityItem" class="flex-column">
+                <span v-if="item && item.name" >{{item.name}}</span>
+                
+                <div class="weather flex-row">
+                    <span>{{Math.round((item && item.main && item.main.temp) ? (item.main.temp) : 0)}}&deg;</span>
+                    <img loading="lazy" :src="require(`../../../../public/conditions/${(item && item.weather && item.weather[0] && item.weather[0].icon) ? (item.weather[0].icon) : '01d' }.svg`)" :alt="`${item.name} temperature`"/>
+                    
+                </div>
+                
+                <div class="weather--pic">
+                    <img
+                    loading="lazy"
+                    :src="require(`../../../../public/pictures/${(item && item.weather && item.weather[0] && item.weather[0].icon)  ? (handlePicturePaths(item.weather[0].icon)) : '01d' }.png`)"
+                    :alt="item.main.temp"
+                    />
+                    
+                    <div class="weather--bg--overlay"></div>
+                    <div @click.stop="delCity" class="del--city" v-if="getKeys.editCities && !getKeys.isSearchBarOpen">
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                </div>
+            </div> 
         </div>
-        
-        <div class="weather--pic">
-            <img
-            loading="lazy"
-            :src="require(`../../../../public/pictures/${(item && item.weather && item.weather[0] && item.weather[0].icon)  ? (handlePicturePaths(item.weather[0].icon)) : '01d' }.png`)"
-            />
-            
-            <div class="weather--bg--overlay"></div>
-            <div @click.stop="delCity" class="del--city" v-if="getKeys.editCities && !getKeys.isSearchBarOpen">
-                <i class="fas fa-trash-alt"></i>
-            </div>
-        </div>
-    </div> 
+
   </transition>
 
 </template>
@@ -30,7 +34,9 @@ import { deleteCity, notify, confirmDialog } from "../../../Utilities/Utilites";
 import { mapGetters } from "vuex";
 
 export default {
-  props: ["item"],
+  props: {
+      item: Object
+    },
   computed: {
       ...mapGetters("toggleKeys", ["getKeys"])
   },
@@ -84,6 +90,10 @@ export default {
         user-select: none;
         -webkit-user-select: none;
         -webkit-user-drag: none;
+        transition: all 300ms ease;
+        &:hover{
+            opacity: 0.8;
+        }
         span{
             z-index:1;
             font-size: 25px;

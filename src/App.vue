@@ -1,11 +1,14 @@
 <template>
   <div id="app">
-    <!-- Confirmation Modal -->
-    <vue-confirm-dialog></vue-confirm-dialog>
-    <!-- Header -->
-    <Header />
     <!-- Modals -->
+    <vue-confirm-dialog></vue-confirm-dialog>
     <Modals v-if="modalsState && Object.keys(modalsState).length > 0 && Object.values(modalsState).some(el => el === true)" />
+    <!-- Global Loading Screen -->
+    <div v-if="loading" class="weather--loading flex-column">
+        <span></span>
+    </div>
+    <!-- Header -->
+    <Header />    
     <!-- Routes -->
     <transition name="fadepage">
        <RouterView :key="$route.fullPath"/>
@@ -35,7 +38,11 @@ export default {
     Modals
   },
   computed: {
-    ...mapGetters("modals", {modalsState:"getModals"})
+    ...mapGetters("modals", {modalsState:"getModals"}),
+    ...mapGetters("toggleKeys", ["getKeys"]),
+    loading() {
+      return this.getKeys?.isLoading;
+    },
   },
   mounted() {
     refreshCitiesResults();

@@ -20,11 +20,9 @@
                     </span>
                 </router-link>
                 <ul class="header--actions flex-row">
-                    <div v-if="getResultList.length > 0" class="flex-row">
-                        <li title="Search for an added city" @click="openSearchBar(true)" :class="{'del--active' : getKeys.isSearchBarOpen}" class="highlight--on--active"><i class="fas fa-search"></i></li>
-                        <li title="Delete a city" @click="delItems" :class="{'del--active' : getKeys && getKeys.editCities}" class="highlight--on--active"><i class="far fa-edit"></i></li>
-                        <li title="Refresh" @click="refreshApp" class="highlight--on--active"><i class="fas fa-sync"></i></li>  
-                    </div>
+                    <li v-if="getResultList.length > 0" title="Search for an added city" @click="openSearchBar(true)" :class="{'del--active' : getKeys.isSearchBarOpen}" class="highlight--on--active"><i class="fas fa-search"></i></li>
+                    <li v-if="getResultList.length > 0" title="Delete a city" @click="delItems" :class="{'del--active' : getKeys && getKeys.editCities}" class="highlight--on--active"><i class="far fa-edit"></i></li>
+                    <li v-if="getResultList.length > 0" title="Refresh" @click="refreshApp" class="highlight--on--active"><i class="fas fa-sync"></i></li>  
                     <li title="Add a city" @click="toggleModal('addCity')" class="highlight--on--active"><i class="fas fa-plus"></i></li>
                 </ul>
             </nav>
@@ -244,6 +242,7 @@ export default {
         }
         .header--actions{
             list-style: none;
+            padding-left: 0;
             li {
                 margin-left:7px;
                 padding:1px 7px;

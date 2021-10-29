@@ -146,7 +146,7 @@ export default {
         val: this.checkIfDayTime(this.currentCity?.sys || false),
       });
     });
-    // air polution
+    // air polution api
     // API().get(`/data/2.5/air_pollution?lat=50.8476&lon=14.0625&appid=${APIKey}`).then(res => {
     //   console.log(res);
     // })

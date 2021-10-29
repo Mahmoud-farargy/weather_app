@@ -3,6 +3,25 @@ import { routes } from "./routes.js";
 import appConfig from "@/app-config.json";
 const router = new VueRouter({
   mode: 'history',
+  scrollBehavior: function(to, _, savedPosition){
+    if(to.hash){
+      setTimeout(() => {
+        const element = document.getElementById(to.hash.replace(/#/, ''))
+        if (element && element.scrollIntoView) {
+          element.scrollIntoView({block: 'center', behavior: 'smooth'})
+          element.classList.add("blink--element");
+          setTimeout(() => {
+            element.classList.remove("blink--element");
+          }, 3000);
+        }
+      }, 500);
+        return {
+          el: to.hash
+        }
+    }else{
+      return savedPosition;
+    }
+  },
   base: process.env.BASE_URL,
   routes
 })
