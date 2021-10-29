@@ -1,9 +1,6 @@
 <template>
   <div id="cities">
-    <div v-if="loading" class="weather--loading flex-column">
-        <span></span>
-    </div>
-    <div v-else-if="citiesResults.length <= 0 && getKeys.isSearchBarOpen" class="empty--cities--container flex-row">
+    <div v-if="citiesResults.length <= 0 && getKeys.isSearchBarOpen" class="empty--cities--container flex-row">
         <div class="empty--cities--inner flex-column">
           No results found.
         </div>
@@ -20,7 +17,7 @@
     <div v-else-if="citiesResults.length > 0" class="cities--container">
         <div
           v-for="(city, index) in citiesResults"
-          v-bind:key="city.id || index"
+          v-bind:key="city.id ? (city.id + index) : index"
           class="cities--inner"
         >
         <city-item v-if="city" :item="city" />
@@ -38,9 +35,6 @@ export default {
   computed: {
     ...mapGetters("savedResults", { citiesResults: "getResultList", rowCities:"getCities"}),
     ...mapGetters("toggleKeys", ["getKeys"]),
-    loading(){
-      return this.getKeys?.isLoading;
-    },
     trackCitiesLength () {
         return this.rowCities.length;
     }

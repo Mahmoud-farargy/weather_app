@@ -171,7 +171,10 @@ ul, ol, dl {
       transform: translateY(5%) rotateX(-35deg);
     }
   }
-  
+  .blink--element{
+    animation: blink linear 700ms backwards;
+    animation-iteration-count: 4;
+  }
 //  loading
   .weather--loading{
     @keyframes spin {
@@ -253,6 +256,17 @@ ul, ol, dl {
   }
   100%{
       opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%{
+    opacity: 0;
+    border: 1px solid transparent;
+  }
+  100%{
+    opacity: 1;
+    border: 1px solid var(--white);
   }
 }
 // xxx---ANIMATIONS---xxx

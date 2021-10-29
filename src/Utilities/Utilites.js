@@ -3,6 +3,7 @@ import Vue from "vue";
 import API from "../services/API";
 import { APIKey } from "../config/info";
 import store from "../state/store";
+import router from "../router/index";
 
 const errorMsg = " An error occurred. try again later";
 const handleLoading = (key, val) => {
@@ -130,54 +131,61 @@ export const updateParts = (prop, newVal) => {
 export const addCity = (cityToAdd) => {
   handleLoading("isAddingCity", true);
   return new Promise((resolve, reject) => {
-    if (
-      !store.getters["savedResults/getCities"].some(
-        (city) => city.cityName.toLowerCase() === cityToAdd.toLowerCase()
-      )
-    ) {
-      API()
-        .get(`data/2.5/weather?q=${cityToAdd}&units=imperial&appid=${APIKey}`)
-        .then((fetchInfo) => {
-          const city = fetchInfo.data;
-          db.collection("users")
-            .doc("dzN43wnwHdQCO691DyiR")
-            .get()
-            .then((data) => {
-              // gets data
-              let citiesCopy = JSON.parse(JSON.stringify(data?.data()?.cities));
+    if(cityToAdd){
+      if (
+          !store.getters["savedResults/getCities"].some(
+            (city) => city.cityName.toLowerCase() === cityToAdd.toLowerCase()
+          )
+        ) {
+          API()
+            .get(`data/2.5/weather?q=${cityToAdd}&units=imperial&appid=${APIKey}`)
+            .then((fetchInfo) => {
+              const city = fetchInfo.data;
+              db.collection("users")
+                .doc("dzN43wnwHdQCO691DyiR")
+                .get()
+                .then((data) => {
+                  // gets data
+                  let citiesCopy = JSON.parse(JSON.stringify(data?.data()?.cities));
 
-              const objToAdd = {
-                cityName: cityToAdd,
-                cityId: city.id,
-              };
-              let newArr = [objToAdd, ...citiesCopy];
-              newArr = Array.from(
-                new Set(newArr?.map((itemId) => itemId.cityName))
-              ).map((ID) => newArr?.find((el) => el.cityName === ID));
-              updateParts("cities", newArr);
-              handleLoading("isAddingCity", false);
-              notify({ type: "success", msg: `${city.name} has been added.` });
-              resolve();
+                  const objToAdd = {
+                    cityName: cityToAdd,
+                    cityId: city.id,
+                  };
+                  let newArr = [objToAdd, ...citiesCopy];
+                  newArr = Array.from(
+                    new Set(newArr?.map((itemId) => itemId.cityName))
+                  ).map((ID) => newArr?.find((el) => el.cityName === ID));
+                  updateParts("cities", newArr);
+                  handleLoading("isAddingCity", false);
+                  notify({ type: "success", msg: `${city.name} has been added.` });
+                  resolve();
+                })
+                .catch(() => {
+                  handleLoading("isAddingCity", false);
+                  reject();
+                });
             })
             .catch(() => {
               handleLoading("isAddingCity", false);
-              reject();
+              notify({
+                type: "error",
+                msg: `${cityToAdd} does not exist as a city. Please make sure to spell it correctly.`,
+              });
             });
-        })
-        .catch(() => {
+        } else {
           handleLoading("isAddingCity", false);
           notify({
             type: "error",
-            msg: `${cityToAdd} does not exist as a city. Please make sure to spell it correctly.`,
+            msg: `${cityToAdd} is already added. Please add another different one.`,
           });
-        });
-    } else {
+          router.replace({name: "Home", hash: `#${cityToAdd.toLowerCase()}`});
+        }
+    }else{
       handleLoading("isAddingCity", false);
-      notify({
-        type: "error",
-        msg: `${cityToAdd} is already added. Please add another different one.`,
-      });
+      reject();
     }
+ 
   });
 };
 
