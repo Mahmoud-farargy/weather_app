@@ -4,7 +4,7 @@ import API from "../services/API";
 import { APIKey } from "../config/info";
 import store from "../state/store";
 import router from "../router/index";
-
+// Instead of Utilities, we can also use the store to handle these asynchronous codes in actions.
 const errorMsg = " An error occurred. try again later";
 const handleLoading = (key, val) => {
   store.dispatch("toggleKeys/mutateKeys", { key, val });
@@ -44,7 +44,6 @@ export const refreshCitiesResults = () => {
       .doc("dzN43wnwHdQCO691DyiR")
       .get()
       .then((data) => {
-        handleLoading("isLoading", false);
         const receivedData = data.data();
         if (receivedData) {
           const myCities = receivedData?.cities;
@@ -70,6 +69,7 @@ export const refreshCitiesResults = () => {
             };
             getCitiesInfo()
               .then((finalResults) => {
+                handleLoading("isLoading", false);
                 const stringifiedData = JSON.parse(
                   JSON.stringify(finalResults)
                 );
@@ -84,6 +84,7 @@ export const refreshCitiesResults = () => {
                 resolve(stringifiedData);
               })
               .catch(() => {
+                handleLoading("isLoading", false);
                 notify({
                   type: "error",
                   msg:
@@ -180,6 +181,7 @@ export const addCity = (cityToAdd) => {
             msg: `${cityToAdd} is already added. Please add another different one.`,
           });
           router.replace({name: "Home", hash: `#${cityToAdd.toLowerCase()}`});
+          store.dispatch("modals/toggleModal", {type: "addCity"});
         }
     }else{
       handleLoading("isAddingCity", false);
