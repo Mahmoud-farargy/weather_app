@@ -49,10 +49,10 @@ export default {
 
 <style lang="scss" scoped>
     .backdrop{
-      z-index: 101;
+      z-index: var(--zIndex-backdrop);
     }
     #addCity{
-        z-index: 130;
+        z-index: var(--zIndex-modal);
         position: fixed;
         top: 50%;
         left: 50%;

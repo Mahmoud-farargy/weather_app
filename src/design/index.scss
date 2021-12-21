@@ -43,6 +43,12 @@
     --transition-mild: 500ms ease all;
     // radius
     --el-radius: 5px;
+    // z-index
+    --zIndex-loading: 85;
+    --zIndex-header: 99;
+    --zIndex-seachBar: 200;
+    --zIndex-modal: 130;
+    --zIndex-backdrop: 101;
 }
 body{
     user-select: none;
@@ -181,12 +187,15 @@ ul, ol, dl {
       to {
         transform: rotateZ(360deg);
       }
-    }
+    }  
+    position: fixed;
+    inset: 0 0 0 0;
     height: 100vh;
     width: 100%;
     justify-content: center;
     align-items:center;
     background-color: var(--white);
+    z-index: var(--zIndex-loading);
     span {
       display: block;
       margin: 0 auto;

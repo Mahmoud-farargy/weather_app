@@ -132,7 +132,7 @@ export default {
      width: 100%;
      padding:23px 10px;
      background-color: var(--primary-clr);
-     z-index: 200;
+     z-index: var(--zIndex-seachBar);
      color: var(--white);
      .container{
          padding-top: 0;
@@ -200,7 +200,7 @@ export default {
      top:0;
      left:0;
      width: 100%;
-     z-index: 99;
+     z-index: var(--zIndex-header);
      background-color: var(--primary-clr);
      color: var(--white);
      box-shadow: var(--slight-shadow);
