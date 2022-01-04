@@ -153,7 +153,7 @@ export const addCity = (cityToAdd) => {
                     cityName: cityToAdd,
                     cityId: city.id,
                   };
-                  let newArr = [objToAdd, ...citiesCopy];
+                  let newArr = [objToAdd, ...citiesCopy]?.slice(0,115);
                   newArr = Array.from(
                     new Set(newArr?.map((itemId) => itemId.cityName))
                   ).map((ID) => newArr?.find((el) => el.cityName === ID));
@@ -177,7 +177,7 @@ export const addCity = (cityToAdd) => {
         } else {
           handleLoading("isAddingCity", false);
           notify({
-            type: "error",
+            type: "info",
             msg: `${cityToAdd} is already added. Please add another different one.`,
           });
           router.replace({name: "Home", hash: `#${cityToAdd.toLowerCase()}`});

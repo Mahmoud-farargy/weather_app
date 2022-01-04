@@ -12,6 +12,7 @@ const router = new VueRouter({
           element.classList.add("blink--element");
           setTimeout(() => {
             element.classList.remove("blink--element");
+            window.history.pushState("", document.title, window.location.pathname);
           }, 3000);
         }
       }, 500);
