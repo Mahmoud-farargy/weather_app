@@ -1,6 +1,6 @@
 # weather_app
 
-Desgin inspired by <a hrfe="https://www.frontendmentor.io/challenges">Frontendmentor.io</a>
+Desgin inspired by <a href="https://www.frontendmentor.io/challenges">Frontendmentor.io</a>
 
 ## Project setup
 ```
