@@ -19,7 +19,7 @@
                         {{logoText}}
                     </span>
                 </router-link>
-                <ul class="header--actions flex-row">
+                <ul :class="{'disabled': getKeys.isLoading || getKeys.isGettingWeather}" class="header--actions flex-row">
                     <li v-if="getResultList.length > 0" title="Search for an added city" @click="openSearchBar(true)" :class="{'del--active' : getKeys.isSearchBarOpen}" class="highlight--on--active"><i class="fas fa-search"></i></li>
                     <li v-if="getResultList.length > 0" title="Delete a city" @click="delItems" :class="{'del--active' : getKeys && getKeys.editCities}" class="highlight--on--active"><i class="far fa-edit"></i></li>
                     <li v-if="getResultList.length > 0" title="Refresh" @click="refreshApp" class="highlight--on--active"><i class="fas fa-sync"></i></li>  
@@ -93,7 +93,7 @@ export default {
             this.mutateKeys({key: "isFahrenheit"});
         },
         goBack(){
-            this.$router.go(-1);
+            this.$router.push('/');
         },
         openSearchBar(val){
              this.mutateKeys({key: "isSearchBarOpen", val});

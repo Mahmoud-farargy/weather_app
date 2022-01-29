@@ -9,6 +9,15 @@ const errorMsg = " An error occurred. try again later";
 const handleLoading = (key, val) => {
   store.dispatch("toggleKeys/mutateKeys", { key, val });
 };
+export const chartStyles = (tempType)=> {
+  const isDay = store.getters["toggleKeys/getKeys"]?.isDayWeather;
+  return {
+    label: `Temperature per ${tempType || "day"}`,
+    borderWidth: 2,
+    borderColor: isDay ? "#cecece" : "#27699b",
+    backgroundColor: isDay ? "#dadada4d" : "#8bbee44d"
+  }
+}
 export const generateNewId = () =>
   `${Math.random()
     .toString(36)
@@ -171,7 +180,7 @@ export const addCity = (cityToAdd) => {
               handleLoading("isAddingCity", false);
               notify({
                 type: "error",
-                msg: `${cityToAdd} does not exist as a city. Please make sure to spell it correctly.`,
+                msg: `"${cityToAdd}" does not exist as a city. Please make sure to spell it correctly.`,
               });
             });
         } else {

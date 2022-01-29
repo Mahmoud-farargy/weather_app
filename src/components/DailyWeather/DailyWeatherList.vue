@@ -13,7 +13,6 @@
         :chartData="chartData"
         :isDay="getKeys.isDayWeather"
         :loading="loading"
-        :getDegree="getDegree"
       />
       <!-- Daily forecast items -->
       <ul class="daily--weather--inner">
@@ -51,6 +50,7 @@ import { mapGetters, mapActions } from "vuex";
 import WeatherDetails from "../WeatherDetails/WeatherDetails";
 import DailyWeatherItem from "./DailyWeatherItem/DailyWeatherItem.vue";
 import WeatherChart from "@/components/WeatherChart/WeatherChart";
+import { chartStyles } from "@/Utilities/Utilites";
 import moment from "moment-timezone";
 
 export default {
@@ -81,10 +81,7 @@ export default {
                     el.temp?.max ? Math.round(getDegree(el.temp?.max)) : "_"
                   }`;
                 }),
-                label: "Max Temperature",
-                backgroundColor: this.getKeys?.isDayWeather
-                  ? "#cecece"
-                  : "#27699b",
+                ...chartStyles("day")
               },
             ],
           }

@@ -20,6 +20,15 @@ export const routes = [
       // this generates a separate chunk (weather.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/Weather.vue')
+    },
+    {
+      path: "*",
+      name: "Error",
+      meta: {
+        title: "404 Error",
+        requiresAuth: false
+      },
+      component: () =>  import("../views/Error.vue")
     }
   ]
 

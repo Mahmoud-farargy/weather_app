@@ -1,20 +1,29 @@
 <template>
   <div id="modals">
     <add-city v-if="modalsState.addCity" />
+    <share v-if="modalsState.share" :linkUrl="currentUrl" :cityName="cityName"/>
   </div>
  
 </template>
 
 <script>
-import AddCity from "./AddCity/AddCity.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Modal",
-  components: { AddCity },
+  components: { 
+    AddCity: () => import("./AddCity/AddCity.vue"),
+    Share: () => import("./Share/Share.vue")
+  },
   computed: {
-      ...mapGetters("modals", {modalsState: "getModals"})
-  }
+      ...mapGetters("modals", {modalsState: "getModals"}),
+      currentUrl(){
+        return window.location.href || "";
+      },
+      cityName(){
+        return this.$route.params?.city || "";
+      }
+  },
 };
 </script>
 
