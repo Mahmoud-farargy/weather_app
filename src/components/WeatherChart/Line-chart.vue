@@ -33,14 +33,22 @@ export default {
     }
   },
   props: ["chartData", "isDay"],
+  methods: {
+    updateChart(val){
+         this.renderChart({
+              labels: val?.labels,
+              datasets: val?.sets
+            }, this.options); 
+    }
+  },
   extends: Line,
   watch: {
-    chartData(val) {
-          this.renderChart({
-          labels: val?.labels,
-          datasets: val?.sets
-        }, this.options);
-      },
+    chartData(val){
+          this.updateChart(val);
+    },
+  },
+  mounted(){
+    this.updateChart(this.chartData);
   }
 }
 </script>

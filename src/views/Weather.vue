@@ -44,7 +44,7 @@
       </div>
     </div>
     <div v-else class="unavailable--data flex-column">
-      <h3>No available cities</h3>
+      <h3>"{{this.cityName}}" does not exist as a city. Please make sure to spell it correctly.</h3>
     </div>
   </div>
 </template>
@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       currentCity: {},
+      cityName: ""
     };
   },
   components: {
@@ -91,20 +92,11 @@ export default {
   methods: {
     ...mapActions("toggleKeys", ["mutateKeys"]),
     ...mapActions("savedResults", ["updateTimezone"]),
-    getWeather() {
-      this.mutateKeys({ key: "isGettingWeather", val: true });
-      this.currentCity = this.results.filter(
-        (result) => result.name === this.$route.params.city
-      )[0];
+    getInfo({lat, lon}){
       return new Promise((resolve, reject) => {
         API()
           .get(
-            `data/2.5/onecall?lat=${
-              this.currentCity && this.currentCity.coord.lat
-            }&lon=${
-              this.currentCity && this.currentCity.coord.lon
-            }&exclude=current&alerts&units=imperial&appid=${APIKey}
-                      `
+            `data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current&alerts&units=imperial&appid=${APIKey}`
           )
           .then((res) => {
             this.mutateKeys({ key: "isGettingWeather", val: false });
@@ -112,8 +104,52 @@ export default {
           })
           .catch(() => {
             this.mutateKeys({ key: "isGettingWeather", val: false });
-            reject([]);
+            reject({});
           });
+      });
+    },
+    getCityLocation(){
+      return new Promise((resolve, reject) => {
+        if(this.cityName){
+          API().get(`data/2.5/weather?q=${this.cityName}&units=imperial&appid=${APIKey}`).then((res) =>{
+            const coords = res.data?.coord;
+            this.currentCity = res.data;
+            if(coords){
+              resolve(coords);
+            }else{
+              reject({});
+            }
+          }).catch(() => {
+             reject({});
+          });
+        }else{
+          reject({});
+        }
+      });
+    },
+    getWeather() {
+      this.mutateKeys({ key: "isGettingWeather", val: true });
+      this.currentCity = this.results.filter(
+        (result) => result.name === this.cityName
+      )[0];
+      const coords = this.currentCity?.coord;
+      const areCoordsAvailable = coords?.lat && coords?.lon;
+      return new Promise((resolve, reject) => {
+          if(areCoordsAvailable){
+              this.getInfo({lat: coords.lat, lon: coords.lon}).then((resData) => {
+                  resolve(resData);
+              }).catch(() => {
+                  reject({});
+              });
+          }else{
+              this.getCityLocation().then((res) => {
+              this.getInfo(res).then((resData) => {
+                  resolve(resData);
+              }).catch(() => {
+                    reject({});
+                });
+              });
+          }
       });
     },
     checkIfDayTime(sys) {
@@ -136,16 +172,34 @@ export default {
         return Math.round(((temp - 32) * 5) / 9);
       }
     },
+    loadWeather() {
+        this.getWeather().then((res) => {
+          if(typeof res === "object" && Object.keys(res).length > 0){
+            this.currentCity = { ...this.currentCity, ...res };
+            this.updateTimezone(res?.timezone);
+            this.mutateKeys({
+              key: "isDayWeather",
+              val: this.checkIfDayTime(this.currentCity?.sys || false),
+            });   
+          }else{
+            this.currentCity = {};
+          }
+        }).catch(() => {
+            this.currentCity = {};
+        });
+    }
+  },
+  watch: {
+      "$route.params":{
+          deep: true,
+          immediate: true,
+          handler({city}){
+            this.cityName = city || "";
+          }
+      }
   },
   created() {
-    this.getWeather().then((res) => {
-      this.currentCity = { ...this.currentCity, ...res };
-      this.updateTimezone(res?.timezone);
-      this.mutateKeys({
-        key: "isDayWeather",
-        val: this.checkIfDayTime(this.currentCity?.sys || false),
-      });
-    });
+    this.loadWeather();
     // air polution api
     // API().get(`/data/2.5/air_pollution?lat=50.8476&lon=14.0625&appid=${APIKey}`).then(res => {
     //   console.log(res);

@@ -50,6 +50,7 @@
 import HourlyWeatherItem from "./HourlyWeatherItem/HourlyWeatherItem";
 import WeatherDetails from "../WeatherDetails/WeatherDetails";
 import WeatherChart from "@/components/WeatherChart/WeatherChart";
+import { chartStyles } from "@/Utilities/Utilites";
 import { mapActions, mapGetters } from "vuex";
 import moment from "moment-timezone";
 
@@ -96,16 +97,14 @@ export default {
                 data: hourlyList.map((el) => {
                   return Math.round(getDegree(el.temp));
                 }),
-                label: "Temperature",
-                backgroundColor: this.isDay ? "#cecece" : "#27699b",
+                ...chartStyles("hour")
               },
-              {
-                data: hourlyList.map((el) => {
-                  return Math.round(getDegree(el.feels_like));
-                }),
-                label: "Feels Like",
-                backgroundColor: "#1d4da7",
-              },
+              // {
+              //   data: hourlyList.map((el) => {
+              //     return Math.round(getDegree(el.feels_like));
+              //   }),
+              //   ...chartStyles("feels like")
+              // },
             ],
           }
         : {};

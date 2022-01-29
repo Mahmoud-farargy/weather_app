@@ -5,13 +5,17 @@
       class="container flex-column current--weather--inner"
     >
       <div class="weather--info flex-column">
-        <span
-          :title="`Current Location: ${currentCity.name} in ${currentCity.sys.country}`"
-          class="city--name"
-          ><i class="fas fa-map-marker-alt marker--icon"></i>
-          {{ currentCity.name }},
-          {{ currentCity.sys.country && currentCity.sys.country }}</span
-        >
+        <div class="city--top flex-row">
+          <span
+            :title="`Current Location: ${currentCity.name} in ${currentCity.sys.country}`"
+            class="city--name"
+            ><i class="fas fa-map-marker-alt marker--icon"></i>
+            {{ currentCity.name | trimText(50)}},
+            {{ currentCity.sys.country && currentCity.sys.country | trimText(50)}}</span
+          >
+          <button @click="() => openShareModal()" class="share--icon--btn"><i class="fas fa-share-alt"></i></button>
+        </div>
+
         <span
           :title="`Current time in ${currentCity.name}`"
           class="city--time"
@@ -42,11 +46,8 @@
           loading="lazy"
           class="fadeEffect"
           v-bind:src="
-            require(isDay
-              ? '../../../public/sun.png'
-              : '../../../public/moon.png')
-          "
-          :alt="`${isDay ? 'Daytime' : 'Nighttime'}`"
+            require(`../../../public/${isDay ? 'sun': 'moon'}.png`)"
+            :alt="`${isDay ? 'Daytime' : 'Nighttime'}`"
         />
       </div>
     </div>
@@ -55,7 +56,7 @@
 
 <script>
 import moment from "moment-timezone";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -74,6 +75,10 @@ export default {
     },
   },
   methods: {
+    ...mapActions("modals", ["toggleModal"]),
+    openShareModal(){
+      this.toggleModal({type: "share"});
+    },
     getCityTime() {
       this.timeInterval = setInterval(() => {
         this.formattedTime = `${moment()
@@ -108,13 +113,30 @@ export default {
   .weather--info {
     z-index: 5;
     flex: 1;
-    .marker--icon {
-      font-size: 20px;
-    }
-    .city--name {
-      margin-bottom: 3px;
-      font-size: 25px;
-      font-weight: 700;
+
+    .city--top{
+      .city--name {
+        margin-bottom: 3px;
+        font-size: 25px;
+        font-weight: 700;
+      } 
+      .marker--icon {
+        font-size: 20px;
+      }
+      .share--icon--btn{
+        border:none;
+        background: none;
+        margin-left: 0.4rem;
+        cursor: pointer;
+        text-align: center;
+        padding: 0.2rem 0.5rem;
+        i{
+          color: var(--white);
+        }
+        &:focus{
+          outline: none;
+        }
+      }
     }
     .current--temperture {
       margin-top: 40px;

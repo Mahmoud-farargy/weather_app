@@ -8,7 +8,8 @@ import axios from 'axios';
 import VueRouter from 'vue-router';
 import VueToast from 'vue-toast-notification';
 import AsyncComputed from 'vue-async-computed';
-import VueConfirmDialog from 'vue-confirm-dialog'
+import VueConfirmDialog from 'vue-confirm-dialog';
+import VueSocialSharing from 'vue-social-sharing';
 
 Vue.config.productionTip = false;
 Vue.use(axios);
@@ -16,6 +17,7 @@ Vue.use(VueRouter);
 Vue.use(VueToast);
 Vue.use(AsyncComputed);
 Vue.use(VueConfirmDialog);
+Vue.use(VueSocialSharing);
 
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default);
 // Filters

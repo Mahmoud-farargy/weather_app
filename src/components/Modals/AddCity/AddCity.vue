@@ -1,38 +1,34 @@
 <template>
-    <div class="addModal">
-        <div id="addCity" class="flex-column fadeEffect">
-            <div class="add--city--container">
-                <form @submit="onAddingSubmission" class="add--city--inner flex-column">
-                    <label for="city">Enter location:</label>
-                    <input :class="{'errorClass': submitted && !city}" type="text" name="city-name" id="city" placeholder="Search by city name" v-model="city" />
-                    <input :disabled=" getKeys && getKeys.isAddingCity " :class="{'disabled': getKeys && getKeys.isAddingCity }" type="submit" name="submit-adding-city" value="Add" />
-                </form>
-            </div>
-            
-        </div>
-        <div class="backdrop" @click="closeModal"></div>   
-    </div>
-
+        <Modal>
+            <div slot="modal_body" class="add--city--container">
+                    <form @submit="onAddingSubmission" class="add--city--inner flex-column">
+                        <label for="city">Enter location:</label>
+                        <input :class="{'errorClass': submitted && !city}" type="text" name="city-name" id="city" placeholder="Search by city name" v-model="city" />
+                        <input :disabled=" getKeys && getKeys.isAddingCity " class="primary-btn-lg" :class="{'disabled': getKeys && getKeys.isAddingCity }" type="submit" name="submit-adding-city" value="Add" />
+                    </form>
+            </div> 
+        </Modal>
 </template>
 
 <script>
+import Modal from "../Modal.vue";
 import { mapActions, mapGetters } from "vuex";
-import { addCity } from "../../../Utilities/Utilites";
+import { addCity } from "@/Utilities/Utilites";
 export default {
     computed: {
          ...mapGetters("toggleKeys", ["getKeys"]),
     },
+    components: {
+        Modal
+    },
     methods: {
       ...mapActions("modals", ["toggleModal"]),
-      closeModal(){
-        this.toggleModal({type: "addCity"});
-      },
       onAddingSubmission(e){
           e.preventDefault();
           this.submitted = true;
           if(this.city && !this.getKeys?.isAddingCity){
                addCity(this.city).then(() => {
-                   this.closeModal();
+                   this.toggleModal({ type: "addCity"});
                });
           }
          
@@ -48,22 +44,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .backdrop{
-      z-index: var(--zIndex-backdrop);
-    }
-    #addCity{
-        z-index: var(--zIndex-modal);
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        justify-content: center;
-        align-content: center;
-        padding:0;
-        margin:0;
-        width: 80%;
-        max-width: 500px;
-        .add--city--container{
+           .add--city--container{
             background-color: var(--secondary-clr);
             padding: 20px;
             width: 100%;
@@ -91,16 +72,6 @@ export default {
                         border-bottom-color: var(--white);
                     }
                 }
-                input[type="submit"]{
-                     color: inherit;
-                     background-color: var(--dark);
-                     padding: 6px 20px;
-                     border-radius: 8px;
-                     border: none;
-                     box-shadow:var(--slight-shadow);
-                     max-width: 130px;
-                }
             }
         }
-    }
 </style>

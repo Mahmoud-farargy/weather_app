@@ -1,13 +1,14 @@
 export const state = {
     modals: {
        addCity: false,
+       share: false
     }
 }
 
 export const mutations = {
     toggleModal: (state, payload) =>{
         const { type, val } = payload;
-        if(type && (Object.keys(state.modals).map(key => key).indexOf(type) !== -1)){
+        if(type === "closeAll" || type && (Object.keys(state.modals).map(key => key).indexOf(type) !== -1)){
             if(type === "closeAll"){
                 Object.keys(state.modals).map( key => {
                     state.modals[key] = false;
