@@ -120,16 +120,17 @@ export default {
   },
   methods: {
     copyLink(){
-      const link = this.linkUrl;
-      const $body = document.getElementsByTagName("body")[0];
-      const $tempInput = document.createElement("textarea");
-      $body.appendChild($tempInput);
-      $tempInput.innerHTML = link;
-      $tempInput.style.whiteSpace = "pre-wrap";
-      $tempInput.select();
-      $tempInput.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-      $body.removeChild($tempInput);
+      // const link = this.linkUrl;
+      // const $body = document.getElementsByTagName("body")[0];
+      // const $tempInput = document.createElement("textarea");
+      // $body.appendChild($tempInput);
+      // $tempInput.innerHTML = link;
+      // $tempInput.style.whiteSpace = "pre-wrap";
+      // $tempInput.select();
+      // $tempInput.setSelectionRange(0, 99999);
+      // document.execCommand("copy");
+      // $body.removeChild($tempInput);
+      navigator.clipboard.writeText(this.linkUrl);
       this.isCopied = true;
     }
   },

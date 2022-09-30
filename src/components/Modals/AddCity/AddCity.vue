@@ -3,7 +3,7 @@
             <div slot="modal_body" class="add--city--container">
                     <form @submit="onAddingSubmission" class="add--city--inner flex-column">
                         <label for="city">Enter location:</label>
-                        <input :class="{'errorClass': submitted && !city}" type="text" name="city-name" id="city" placeholder="Search by city name" v-model="city" />
+                        <input :class="{'errorClass': submitted && !city}" type="text" name="city-name" id="city" placeholder="Search by city name (e.g. Madrid, Spain)" v-model="city" />
                         <input :disabled=" getKeys && getKeys.isAddingCity " class="primary-btn-lg" :class="{'disabled': getKeys && getKeys.isAddingCity }" type="submit" name="submit-adding-city" value="Add" />
                     </form>
             </div> 
